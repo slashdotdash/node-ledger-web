@@ -1,25 +1,27 @@
 <!DOCTYPE html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <title>ledger web</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   	<link rel="stylesheet" href="/css/main.css">
   </head>
   <body>
-      <!--[if lt IE 7]>
-          <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-      <![endif]-->
+    <!--[if lt IE 7]>
+      <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+    <![endif]-->
 
-      <div id="wrap" class="container" role="document">
-        <div id="content" class="row">
-          <div id="main" class="span12" role="main">
-      		<%- body %>
-          </div>
-        </div>
-      </div>
+    <div class="container">
+      <%- body %>
+    </div>
 
-      <script type="text/javascript" src="/js/scripts.js"></script>
+    <script type="text/javascript" src="/js/scripts.js"></script>
+    <script src="/js/ledger/ledger.js"></script>
+    <script src="/js/ledger/balance/model.js"></script>
+    <script src="/js/ledger/balance/views.js"></script>
+    <script src="/js/ledger/balance/controller.js"></script>
+    <script type="text/javascript">
+      <%- blocks.script %>
+    </script>
   </body>
 </html>

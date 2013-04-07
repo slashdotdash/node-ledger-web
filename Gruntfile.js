@@ -21,8 +21,8 @@ module.exports = function(grunt) {
       gruntfile: {
         src: 'Gruntfile.js'
       },
-      lib_test: {
-        src: ['lib/**/*.js', 'test/**/*.js']
+      ledger: {
+        src: ['public/js/ledger/**/*.js']
       }
     },
     recess: {
@@ -30,6 +30,7 @@ module.exports = function(grunt) {
         src: [
           'components/bootstrap/less/bootstrap.less',
           'components/bootstrap/less/responsive.less',
+          'components/nvd3/src/nv.d3.css',
           'public/css/less/app.less'
         ],
         dest: 'public/css/main.css',
@@ -43,7 +44,10 @@ module.exports = function(grunt) {
       js: {
         src: [
           'components/jquery/jquery.min.js',
-          'components/modernizr/modernizr.js'
+          'components/modernizr/modernizr.js',
+          'components/underscore/underscore.js',
+          'components/backbone/backbone-min.js',
+          'components/backbone.marionette/lib/backbone.marionette.min.js'
         ],
         dest: 'public/js/scripts.js'
       }
@@ -67,5 +71,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-recess');
     
   // Default task.
-  grunt.registerTask('default', ['jshint', 'recess', 'concat']);
+  grunt.registerTask('default', ['recess', 'concat']);
 };
