@@ -6,6 +6,11 @@ Ledger.module('Balance', function (Balance, App, Backbone) {
 	// ----------
 	Balance.Model = Backbone.Model.extend({
 		defaults: {
+		  total: {
+        currency: '',
+        amount: 0,
+        formatted: ''
+      },
 			account: {
         fullname: ''
 			}

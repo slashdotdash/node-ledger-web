@@ -21,7 +21,8 @@ app.configure(function() {
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
   
-  var ledgerRest = new LedgerRest({ file: '/Users/ben/src/node-ledger-rest/spec/data/single-transaction.dat' });
+  // Example ledger .dat file from the appendix of the Ledger 3 manual
+  var ledgerRest = new LedgerRest({ file: 'example/drewr.dat' });
   
   app.use("/api", function (req, res) {
     ledgerRest.server.server.emit('request', req, res);
@@ -33,7 +34,6 @@ app.configure('development', function(){
 });
 
 app.get('/', home.index);
-// app.get('/balance', balance.index);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
