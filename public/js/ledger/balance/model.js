@@ -12,12 +12,30 @@ Ledger.module('Balance', function (Balance, App, Backbone) {
         formatted: ''
       },
 			account: {
-        fullname: ''
-			}
+        fullname: '',
+        shortname: ''
+			},
+			selected: false
 		},
 
 		initialize: function () {
-		}
+		},
+
+    fullname: function() {
+      return this.get('account').fullname;
+    },
+
+		filterByDepth: function(depth) {
+      return this.get('account').depth === depth;
+    },
+    
+    filterByParentName: function(name) {
+      if (name.length == 0) {
+        return this.filterByDepth(1);
+      }
+      
+      return this.fullname().indexOf(name + ':') === 0;
+    }
 	});
 
 	// Balance Collection

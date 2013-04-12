@@ -11,11 +11,30 @@
       <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
 
-    <div class="container">
-      <%- body %>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <!--Sidebar -->
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Ledger</li>
+              <li class="active"><a href="/">Home</a></li>
+              <li><a href="/balance">Balance</a></li>
+              <li><a href="/balance">Register</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="span10">
+          <%- body %>
+        </div>
+      </div>
     </div>
 
     <script type="text/javascript" src="/js/scripts.js"></script>
+    <script type="text/javascript" src="/js/d3.v2.js"></script>
+    <script type="text/javascript" src="/js/fisheye.js"></script>
+    <script type="text/javascript" src="/js/nv.d3.js"></script>
+    <script src="/js/ledger/filteredCollection.js"></script>
     <script src="/js/ledger/ledger.js"></script>
     <script src="/js/ledger/balance/model.js"></script>
     <script src="/js/ledger/balance/views.js"></script>

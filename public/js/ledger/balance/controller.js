@@ -8,8 +8,9 @@ Ledger.module('Balance', function (Balance, App, Backbone, Marionette, $, _) {
 	// Handle routing.
 	Balance.Router = Marionette.AppRouter.extend({
 		appRoutes: {
-      // '/balance': 'filterItems'
-		}
+		  'balance': 'topLevelAccounts',
+		  'balance/*account': 'filterByAccount'
+		}		
 	});
 
 	// Balance Controller (Mediator)
@@ -19,6 +20,12 @@ Ledger.module('Balance', function (Balance, App, Backbone, Marionette, $, _) {
 	// level, above the implementation detail of views and models
 	Balance.Controller = function () {
 		this.balance = new Balance.ModelList();
+    this.filteredBalance = FilteredCollection(this.balance);
+
+    // Initially show top-level accounts (e.g. Assets, Expenses, Income, Liabilities)
+    this.filteredBalance.where(function(entry) {
+      return entry.filterByDepth(1); 
+    });
 	};
 
 	_.extend(Balance.Controller.prototype, {
@@ -27,8 +34,9 @@ Ledger.module('Balance', function (Balance, App, Backbone, Marionette, $, _) {
 		start: function () {
       this.showHeader(this.balance);
 			this.showFooter(this.balance);
-			this.showBalance(this.balance);
-			this.balance.fetch();
+      this.showBalance(this.filteredBalance);
+      
+			this.balance.fetch({reset: true});
 		},
 
 		showHeader: function (todoList) {
@@ -46,17 +54,33 @@ Ledger.module('Balance', function (Balance, App, Backbone, Marionette, $, _) {
 		},
 
 		showBalance: function (balance) {
-			App.main.show(new Balance.Views.ListView({
-				collection: balance
-			}));
+      // App.main.show(new Balance.Views.ListView({
+      //  collection: balance
+      // }));
+      App.main.show(new Balance.Views.ChartView({
+        collection: balance
+      }))
 		},
 
-		// Set the filter to show complete or all items
-		filterItems: function (filter) {
-			App.vent.trigger('todoList:filter', filter.trim() || '');
+    topLevelAccounts: function() {
+      App.vent.trigger('balance:filter', {name: ''});
+    },
+
+		// filter balance by an account
+		filterByAccount: function(account) {
+		  var name = (account || '').split('/').join(':');
+
+		  App.vent.trigger('balance:filter', {name: name});
 		}
 	});
 
+  App.vent.on('balance:filter', function(filter) {
+    var name = filter.name,
+        url = name.split(':').join('/');
+
+    Backbone.history.navigate('balance/' + url, {trigger: false});
+  });
+  
 	// Balance Initializer
 	// --------------------
 	//

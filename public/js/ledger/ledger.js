@@ -17,5 +17,5 @@ Ledger.on('initialize:before', function() {
 });
 
 Ledger.on('initialize:after', function() {
-	Backbone.history.start();
+	Backbone.history.start({pushState: true});
 });
