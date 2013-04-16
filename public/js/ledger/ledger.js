@@ -4,9 +4,8 @@
 var Ledger = new Backbone.Marionette.Application();
 
 Ledger.addRegions({
-	header: '#header',
-	main: '#main',
-	footer: '#footer'
+	nav: '#nav',
+	main: '#main'
 });
 
 Ledger.on('initialize:before', function() {

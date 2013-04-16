@@ -1,7 +1,7 @@
 /*global Ledger */
-'use strict';
-
 Ledger.module('Balance', function (Balance, App, Backbone) {
+  'use strict';
+  
 	// Balance Model
 	// ----------
 	Balance.Model = Backbone.Model.extend({
@@ -14,8 +14,7 @@ Ledger.module('Balance', function (Balance, App, Backbone) {
 			account: {
         fullname: '',
         shortname: ''
-			},
-			selected: false
+			}
 		},
 
 		initialize: function () {

@@ -1,7 +1,55 @@
 <% layout('layout') -%>
 
 <div id="main">
+  <div class="jumbotron">
+    <h1>Ledger Web</h1>
+    <p class="lead">Your financial dashboard.</p>
+    
+    <hr />
+    <div class="row-fluid">
+      <div class="span3">
+        <h2>Income</h2>
+        <p>Compared to expenditure</p>
+        <p>Over time</p>
+        <p>By Category</p>        
+      </div>
+      
+      <div class="span3">
+        <h2>Spending</h2>
+        <p>Over time</p>
+        <p>By Category</p>
+      </div>
+      
+      <div class="span3">
+        <h2>Net Worth</h2>
+      </div>
+      
+      <div class="span3">
+        <h2>Balance</h2>
+        <p>By account</p>
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- Home -->
+<script type="text/html">  
+</script>
+
+<!-- Income -->
+<script type="text/html" id="template-income-chart-view">
+  <div id="chart">
+    <svg style="height: 700px; width: 1000px"> </svg>
+  </div>
+  
+  <div>
+    <ul id="filter"> </ul>
+  </div>
+</script>
+
+<script type="text/html" id="template-income-chart-filter-item-view">
+  <li>{{payee}}</li>
+</script>
 
 <!-- Balance -->
 <script type="text/html" id="template-balance-list-view">

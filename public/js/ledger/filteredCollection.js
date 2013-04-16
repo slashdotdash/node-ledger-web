@@ -59,7 +59,6 @@ function FilteredCollection(original) {
     
     // Unsubscribe from all events when underlying collection is destroyed
     filtered.listenToOnce(original, 'destroy', function() {
-      console.log('destroyed');
       filtered.stopListening(original);
     });
     

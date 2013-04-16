@@ -11,22 +11,22 @@
       <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
 
-    <div class="container-fluid">
+    <div class="container">
+      <div id="nav" class="navbar">
+        <div class="navbar-inner">
+          <a class="brand" href="/">Ledger</a>
+          <ul class="nav">
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="/income">Income</a></li>
+            <li><a href="/spending">Spending</a></li>
+            <li><a href="/worth">Worth</a></li>
+            <li><a href="/balance">Balance</a></li>
+          </ul>
+        </div>
+      </div>
+      
       <div class="row-fluid">
-        <div class="span2">
-          <!--Sidebar -->
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">Ledger</li>
-              <li class="active"><a href="/">Home</a></li>
-              <li><a href="/balance">Balance</a></li>
-              <li><a href="/balance">Register</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="span10">
-          <%- body %>
-        </div>
+        <%- body %>
       </div>
     </div>
 
@@ -35,10 +35,19 @@
     <script type="text/javascript" src="/js/fisheye.js"></script>
     <script type="text/javascript" src="/js/nv.d3.js"></script>
     <script src="/js/ledger/filteredCollection.js"></script>
+    <script src="/js/ledger/aggregateCollection.js"></script>
     <script src="/js/ledger/ledger.js"></script>
+    
+    <!-- Income -->
+    <script src="/js/ledger/income/model.js"></script>
+    <script src="/js/ledger/income/views.js"></script>
+    <script src="/js/ledger/income/controller.js"></script>
+    
+    <!-- Balance -->
     <script src="/js/ledger/balance/model.js"></script>
     <script src="/js/ledger/balance/views.js"></script>
     <script src="/js/ledger/balance/controller.js"></script>
+    
     <script type="text/javascript">
       <%- blocks.script %>
     </script>

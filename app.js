@@ -24,7 +24,7 @@ app.configure(function() {
   // Example ledger .dat file from the appendix of the Ledger 3 manual
   var ledgerRest = new LedgerRest({ file: 'example/drewr.dat' });
   
-  app.use("/api", function (req, res) {
+  app.use('/api', function (req, res) {
     ledgerRest.server.server.emit('request', req, res);
   });
 });
@@ -34,7 +34,10 @@ app.configure('development', function(){
 });
 
 app.get('/', home.index);
-app.get('/balance*', home.index);
+app.get('/income', home.index);
+app.get('/spending', home.index);
+app.get('/worth', home.index);
+app.get('/balance', home.index);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
