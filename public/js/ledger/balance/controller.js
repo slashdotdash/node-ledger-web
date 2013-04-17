@@ -1,14 +1,14 @@
 /*global Ledger */
-'use strict';
-
 Ledger.module('Balance', function (Balance, App, Backbone, Marionette, $, _) {
+  'use strict';
+  
 	// Balance Router
 	// ---------------
 	//
 	// Handle routing.
 	Balance.Router = Marionette.AppRouter.extend({
 		appRoutes: {
-		  'balance': 'topLevelAccounts',
+		  'balance': 'showBalance',
 		  'balance/*account': 'filterByAccount'
 		}		
 	});
@@ -29,40 +29,20 @@ Ledger.module('Balance', function (Balance, App, Backbone, Marionette, $, _) {
 	};
 
 	_.extend(Balance.Controller.prototype, {
-		// Start the app by showing the appropriate views
-		// and fetching the list of todo items, if there are any
-		start: function () {
-      this.showHeader(this.balance);
-			this.showFooter(this.balance);
-      this.showBalance(this.filteredBalance);
+		start: _.once(function () {
+      this.balance.fetch({reset: true});
+		}),
+
+		showBalance: function () {
+		  console.log('showBalance');
+      this.start();
       
-			this.balance.fetch({reset: true});
-		},
-
-		showHeader: function (todoList) {
-      // var header = new App.Layout.Header({
-      //  collection: todoList
-      // });
-      // App.header.show(header);
-		},
-
-		showFooter: function (balance) {
-      // var footer = new App.Layout.Footer({
-      //  collection: todoList
-      // });
-      // App.footer.show(footer);
-		},
-
-		showBalance: function (balance) {
-      // App.main.show(new Balance.Views.ListView({
-      //  collection: balance
-      // }));
       App.main.show(new Balance.Views.ChartView({
-        collection: balance
-      }))
+        collection: this.filteredBalance
+      }));
 		},
 
-    topLevelAccounts: function() {
+    showLevelAccounts: function() {
       App.vent.trigger('balance:filter', {name: ''});
     },
 
@@ -94,6 +74,6 @@ Ledger.module('Balance', function (Balance, App, Backbone, Marionette, $, _) {
 			controller: controller
 		});
 
-		controller.start();
+    // controller.start();
 	});
 });

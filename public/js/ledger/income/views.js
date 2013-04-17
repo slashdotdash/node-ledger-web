@@ -33,8 +33,6 @@ Ledger.module('Income.Views', function (Views, App, Backbone, Marionette, $, _) 
     buildChart: function() {
       var sourceData = this.chartData();
       if (sourceData.length === 0) return;
-     console.log('sourceData:');
-     console.log(sourceData);
      
       nv.addGraph(function() {
         var chart = nv.models.multiBarChart()
@@ -63,10 +61,10 @@ Ledger.module('Income.Views', function (Views, App, Backbone, Marionette, $, _) 
       if (this.collection.length == 0) { 
         return []; 
       }
-      console.log('x');
+
       var income = this.collection.filter(function(entry) { return entry.isIncome(); }),
           expenses = this.collection.filter(function(entry) { return entry.isExpense(); });
-          
+
       income = this.totalByDate(income, 'Income');
       expenses = this.totalByDate(expenses, 'Expenses');
 

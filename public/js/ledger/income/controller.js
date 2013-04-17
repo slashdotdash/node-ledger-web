@@ -18,9 +18,13 @@ Ledger.module('Income', function (Income, App, Backbone, Marionette, $, _) {
 	};
 
 	_.extend(Income.Controller.prototype, {
-		showIncome: function () {
-		  this.income.fetch({reset: true});
+	  start: _.once(function() {
+	    this.income.fetch({reset: true});
 		  this.expenses.fetch({reset: true});
+	  }),
+	  
+		showIncome: function () {
+		  this.start();
 		  
 		  App.main.show(new Income.Views.IncomeVsExpenditureChartView({
         collection: this.aggregated

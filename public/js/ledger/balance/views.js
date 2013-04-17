@@ -122,14 +122,4 @@ Ledger.module('Balance.Views', function (Views, App, Backbone, Marionette, $) {
       }];
     }
   });
-
-	// Application Event Handlers
-	// --------------------------
-	//
-	// Handler for filtering the list of items by showing and
-	// hiding through the use of various CSS classes
-	App.vent.on('todoList:filter', function (filter) {
-		filter = filter || 'all';
-		$('#todoapp').attr('class', 'filter-' + filter);
-	});
 });
