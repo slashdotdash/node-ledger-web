@@ -49,6 +49,7 @@ Ledger.module('Balance.Views', function (Views, App, Backbone, Marionette, $) {
 
   Views.FilterChartItemView = Marionette.ItemView.extend({
     template: '#template-balance-chart-filter-item-view',
+    tagName: 'li',
     events: {
       'click': 'filter'
     },

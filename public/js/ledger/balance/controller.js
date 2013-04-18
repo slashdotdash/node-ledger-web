@@ -33,10 +33,7 @@ Ledger.module('Balance', function (Balance, App, Backbone, Marionette, $, _) {
       this.balance.fetch({reset: true});
 		}),
 
-		showBalance: function () {
-		  console.log('showBalance');
-      this.start();
-      
+		showBalance: function() {
       App.main.show(new Balance.Views.ChartView({
         collection: this.filteredBalance
       }));
@@ -63,17 +60,19 @@ Ledger.module('Balance', function (Balance, App, Backbone, Marionette, $, _) {
   
 	// Balance Initializer
 	// --------------------
-	//
-	// Get the Balance up and running by initializing the mediator
-	// when the the application is started, pulling in all of the
-	// existing balance items and displaying them.
-	Balance.addInitializer(function () {
-		var controller = new Balance.Controller();
-		
-		controller.router = new Balance.Router({
-			controller: controller
-		});
+	Balance.addInitializer(function() {
+		var controller = new Balance.Controller(),
+		    router = new Balance.Router({	controller: controller });
 
-    // controller.start();
+		controller.router = router;
+		
+		// Start the controller on first route to this module
+		this.listenToOnce(router, 'route', function() {
+		  controller.start();
+		});
+		
+		this.listenTo(router, 'route', function(page) {
+      App.vent.trigger('section:activated', {name: 'balance'});
+    });
 	});
 });

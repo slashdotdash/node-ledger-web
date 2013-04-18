@@ -1,6 +1,10 @@
 <% layout('layout') -%>
 
 <div id="main">
+</div>
+
+<!-- Dashboard -->
+<script type="text/html" id="template-dashboard-view">
   <div class="jumbotron">
     <h1>Ledger Web</h1>
     <p class="lead">Your financial dashboard.</p>
@@ -30,10 +34,15 @@
       </div>
     </div>
   </div>
-</div>
+</script>
 
-<!-- Home -->
-<script type="text/html">  
+<script type="text/html" id="template-dashboard-nav-view">
+  <a class="brand" href="/">Ledger</a>
+  <ul class="nav"> </ul>
+</script>
+
+<script type="text/html" id="template-dashboard-nav-item-view">
+  <a href="{{url}}">{{title}}</a>
 </script>
 
 <!-- Income -->
@@ -76,7 +85,7 @@
 </script>
 
 <script type="text/html" id="template-balance-chart-filter-item-view">
-  <li>{{account.shortname}}</li>
+  {{account.shortname}}
 </script>
 
 <script type="text/html" id="template-balance-item-view">

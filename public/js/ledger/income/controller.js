@@ -24,26 +24,27 @@ Ledger.module('Income', function (Income, App, Backbone, Marionette, $, _) {
 	  }),
 	  
 		showIncome: function () {
-		  this.start();
-		  
 		  App.main.show(new Income.Views.IncomeVsExpenditureChartView({
         collection: this.aggregated
       }));
 		}
 	});
 	
-  // Initializer
+  // Income Initializer
   // -----------
-  //
-  // The router must always be alive with the app, so that it can
-  // respond to route changes and start up the right sub-app 
   Income.addInitializer(function(){
-		var controller = new Income.Controller();
+		var controller = new Income.Controller(),
+		    router = new Income.Router({ controller: controller	});
 
-		controller.router = new Income.Router({
-			controller: controller
+		controller.router = router;
+
+		// Start the controller on first route to this module
+		this.listenToOnce(router, 'route', function() {
+		  controller.start();
 		});
 
-    // controller.start();
+    this.listenTo(router, 'route', function(page) {
+      App.vent.trigger('section:activated', {name: 'income'});
+    });
   });
 });

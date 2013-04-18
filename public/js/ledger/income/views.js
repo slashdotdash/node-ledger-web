@@ -84,7 +84,7 @@ Ledger.module('Income.Views', function (Views, App, Backbone, Marionette, $, _) 
       return _.map(entries, function(entry) {
         return {
           date: new Date(entry.get('date')),
-          total: entry.totalByAccount(type) * -1  // Inverse amounts
+          total: entry.totalByAccount(type) * -1  // Invert amounts
         };
       });
     },
