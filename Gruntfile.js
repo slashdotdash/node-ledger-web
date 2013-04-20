@@ -45,11 +45,11 @@ module.exports = function(grunt) {
         src: [
           'components/jquery/jquery.min.js',
           'components/modernizr/modernizr.js',
-          // 'components/underscore/underscore.js',
+          'components/underscore/underscore.js',
           'components/backbone/backbone-min.js',
           'components/backbone.marionette/lib/backbone.marionette.min.js'
         ],
-        dest: 'public/js/scripts.js'
+        dest: 'public/js/ledger-web.min.js'
       }
     },
     watch: {

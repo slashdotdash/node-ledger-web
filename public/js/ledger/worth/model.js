@@ -27,7 +27,6 @@ Ledger.module('Worth', function (Worth, App, Backbone, Marionette, $, _) {
 		
 		totalByAccount: function(account) {
       return _.reduce(this.get('postings'), function(memo, posting) {
-        console.log('account:'+account+', posting.commodity.amount:'+posting.commodity.amount);
 		    return (account.length === 0 || posting.account.indexOf(account + ':') === 0) ? memo + posting.commodity.amount : memo;
 		  }, 0);
 		},

@@ -80,7 +80,6 @@ Ledger.module('Worth.Views', function (Views, App, Backbone, Marionette, $, _) {
     // Total amount for each date in the given range
     totalByDate: function(dateRange, entries, type) {
       return _.map(dateRange, function(date) {
-        console.log(date+' total:'+this.totalByDateAndAccount(entries, date, type))
         return {
           date: date,
           total: this.totalByDateAndAccount(entries, date, type)

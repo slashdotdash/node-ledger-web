@@ -1,0 +1,7 @@
+#!/bin/bash
+
+ln -s components/jquery/jquery.js public/js/vendor/jquery.js
+ln -s components/modernizr/modernizr.js public/js/vendor/modernizr.js
+ln -s components/underscore/underscore.js public/js/vendor/underscore.js
+ln -s components/backbone/backbone.js public/js/vendor/backbone.js
+ln -s components/backbone.marionette/lib/backbone.marionette.js public/js/vendor/backbone.marionette.js
