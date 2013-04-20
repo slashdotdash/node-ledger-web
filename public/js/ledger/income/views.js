@@ -2,25 +2,12 @@
 'use strict';
 
 Ledger.module('Income.Views', function (Views, App, Backbone, Marionette, $, _) {
-  Views.FilterChartItemView = Marionette.ItemView.extend({
-    template: '#template-income-chart-filter-item-view',
-    events: {
-      'click': 'filter'
-    },
-    
-    filter: function() {
-      App.vent.trigger('income:filter', {name: this.model.fullname()});
-    }
-  });
-
   // Income vs. Expenditure Chart View
   // -----------
   //
   // Display an nvd3 chart of income vs. spending.
-  Views.IncomeVsExpenditureChartView = Backbone.Marionette.CompositeView.extend({
+  Views.IncomeVsExpenditureChartView = Backbone.Marionette.ItemView.extend({
     template: '#template-income-chart-view',
-    itemView: Views.FilterChartItemView,
-    itemViewContainer: '#filter',
 		
     initialize: function() {
       this.listenTo(this.collection, 'all', this.buildChart, this);

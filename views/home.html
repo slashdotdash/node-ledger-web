@@ -50,14 +50,13 @@
   <div id="chart">
     <svg style="height: 700px; width: 1000px"> </svg>
   </div>
-  
-  <div>
-    <ul id="filter"> </ul>
-  </div>
 </script>
 
-<script type="text/html" id="template-income-chart-filter-item-view">
-  <li>{{payee}}</li>
+<!-- Net Worth -->
+<script type="text/html" id="template-net-worth-chart-view">
+  <div id="chart">
+    <svg style="height: 700px; width: 1000px"> </svg>
+  </div>
 </script>
 
 <!-- Balance -->
@@ -75,17 +74,20 @@
 </script>
 
 <script type="text/html" id="template-balance-chart-view">
-  <div id="chart">
-    <svg style="height: 700px; width: 1000px"> </svg>
+  <div class="span2">
+    <ul id="filter" class="nav nav-list">
+      <li class="nav-header">Filter by category</li>
+    </ul>
   </div>
-  
-  <div>
-    <ul id="filter"> </ul>
+  <div class="span10">
+    <div id="chart">
+      <svg style="height: 700px; width: 970px"> </svg>
+    </div>      
   </div>
 </script>
 
 <script type="text/html" id="template-balance-chart-filter-item-view">
-  {{account.shortname}}
+  <a href="#">{{account.shortname}}</a>
 </script>
 
 <script type="text/html" id="template-balance-item-view">

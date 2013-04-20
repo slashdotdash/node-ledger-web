@@ -4,8 +4,6 @@ Ledger.module('Balance', function (Balance, App, Backbone, Marionette, $, _) {
   
 	// Balance Router
 	// ---------------
-	//
-	// Handle routing.
 	Balance.Router = Marionette.AppRouter.extend({
 		appRoutes: {
 		  'balance': 'showBalance',
@@ -13,11 +11,8 @@ Ledger.module('Balance', function (Balance, App, Backbone, Marionette, $, _) {
 		}		
 	});
 
-	// Balance Controller (Mediator)
+	// Balance Controller
 	// ------------------------------
-	//
-	// Control the workflow and logic that exists at the application
-	// level, above the implementation detail of views and models
 	Balance.Controller = function () {
 		this.balance = new Balance.ModelList();
     this.filteredBalance = FilteredCollection(this.balance);

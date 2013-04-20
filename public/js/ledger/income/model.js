@@ -11,8 +11,7 @@ Ledger.module('Income', function (Income, App, Backbone, Marionette, $, _) {
 			postings: []
 		},
 
-		initialize: function () {		  
-		},
+		initialize: function () {	},
 		
 		isIncome: function() {
 		  return _.any(this.get('postings'), function(posting) {
@@ -28,7 +27,7 @@ Ledger.module('Income', function (Income, App, Backbone, Marionette, $, _) {
 		
 		totalByAccount: function(account) {
       return _.reduce(this.get('postings'), function(memo, posting) {
-		    return posting.account === account ? memo : memo + posting.commodity.amount;
+		    return (posting.account.indexOf(account) === 0) ? memo + posting.commodity.amount : memo;
 		  }, 0);
 		}
 	});
