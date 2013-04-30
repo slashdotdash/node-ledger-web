@@ -16,11 +16,6 @@ Ledger.module('Balance', function (Balance, App, Backbone, Marionette, $, _) {
 	Balance.Controller = function () {
 		this.balance = new Balance.ModelList();
     this.filteredBalance = FilteredCollection(this.balance);
-
-    // Initially show top-level accounts (e.g. Assets, Expenses, Income, Liabilities)
-    this.filteredBalance.where(function(entry) {
-      return entry.filterByDepth(1); 
-    });
 	};
 
 	_.extend(Balance.Controller.prototype, {
@@ -29,20 +24,26 @@ Ledger.module('Balance', function (Balance, App, Backbone, Marionette, $, _) {
 		}),
 
 		showBalance: function() {
-      App.main.show(new Balance.Views.ChartView({
-        collection: this.filteredBalance
-      }));
+		  this.showBalanceChartView();
+		  
+		  // Initially show top-level accounts (e.g. Assets, Expenses, Income, Liabilities)
+      this.filteredBalance.where(function(entry) {
+        return entry.filterByDepth(1); 
+      });
 		},
-
-    showLevelAccounts: function() {
-      App.vent.trigger('balance:filter', {name: ''});
-    },
 
 		// filter balance by an account
 		filterByAccount: function(account) {
+		  this.showBalanceChartView();
+		  
 		  var name = (account || '').split('/').join(':');
-
 		  App.vent.trigger('balance:filter', {name: name});
+		},
+		
+		showBalanceChartView: function() {
+      App.main.show(new Balance.Views.ChartView({
+        collection: this.filteredBalance
+      }));		  
 		}
 	});
 

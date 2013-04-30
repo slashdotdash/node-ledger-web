@@ -29,12 +29,19 @@ Ledger.module('Balance', function (Balance, App, Backbone) {
     },
     
     filterByParentName: function(name) {
+      return this.fullname().indexOf(name + ':') === 0;
+    },
+    
+    filterByParentNameAndDepth: function(name) {
       if (name.length == 0) {
         return this.filterByDepth(1);
       }
+
+      var depth = name.split(':').length + 1;
       
-      return this.fullname().indexOf(name + ':') === 0;
+      return this.filterByDepth(depth) && this.filterByParentName(name);
     }
+    
 	});
 
 	// Balance Collection

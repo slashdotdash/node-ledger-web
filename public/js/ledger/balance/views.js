@@ -9,8 +9,9 @@ Ledger.module('Balance.Views', function (Views, App, Backbone, Marionette, $) {
       'click': 'filter'
     },
     
-    filter: function() {
+    filter: function(e) {
       App.vent.trigger('balance:filter', {name: this.model.fullname()});
+      e.preventDefault();
     }
   });
 
@@ -37,7 +38,7 @@ Ledger.module('Balance.Views', function (Views, App, Backbone, Marionette, $) {
       var name = filter.name;
       
       this.collection.where(function(entry) {
-        return entry.filterByParentName(name);
+        return entry.filterByParentNameAndDepth(name);
       });
     },
     

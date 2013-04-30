@@ -61,12 +61,20 @@ Ledger.module('Worth.Views', function (Views, App, Backbone, Marionette, $, _) {
       assets = this.totalByDate(dateRange, assets, 'Assets');
       liabilities = this.totalByDate(dateRange, liabilities, 'Liabilities');
       
+      var assetsPlusLiabilities = _.map(dateRange, function(date, index) {
+        return {
+          date: date,
+          total: assets[index].total + liabilities[index].total
+        };
+      });
+      
       // net worth = assets + liabilities
       var netWorth = this.cumulativeByDate(dateRange, [assets, liabilities]);
 
       return [
-        { key: 'Assets', values: this.convertToCoordinates(assets), bar: true }, 
-        { key: 'Liabilities', values: this.convertToCoordinates(liabilities), bar: true },
+        { key: 'Assets and Liabilities', values: this.convertToCoordinates(assetsPlusLiabilities), bar: true }, 
+        // { key: 'Assets', values: this.convertToCoordinates(assets), bar: true }, 
+        // { key: 'Liabilities', values: this.convertToCoordinates(liabilities), bar: true },
         { key: 'Net Worth', values: this.convertToCoordinates(netWorth) }
       ];
     },

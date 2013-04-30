@@ -12,7 +12,7 @@ Ledger.module('Dashboard', function (Dashboard, App, Backbone, Marionette, $, _)
 
   Dashboard.Controller = function () {
     this.sections = new Dashboard.Sections([
-      new Dashboard.Section({title: 'Home', name: 'dashboard', url: '/', active: true}),
+      new Dashboard.Section({title: 'Home', name: 'dashboard', url: '', active: true}),
       new Dashboard.Section({title: 'Income', name: 'income', url: 'income'}),
       new Dashboard.Section({title: 'Spending', name: 'spending', url: 'spending'}),
       new Dashboard.Section({title: 'Worth', name: 'worth', url: 'worth'}),
@@ -44,7 +44,14 @@ Ledger.module('Dashboard', function (Dashboard, App, Backbone, Marionette, $, _)
 		
 		showSection: function(section, value, options) {
 		  if (value === true) {
-        Backbone.history.navigate(section.get('url'), {trigger: true});
+		    var url = section.get('url');
+		    
+		    // Don't navigate if we are already in this section
+		    if (window.location.pathname.indexOf('/' + url) === 0) {
+		      return;
+		    }
+		    
+        Backbone.history.navigate(url, {trigger: true});
 	    }
 		}
 	});
