@@ -1,0 +1,198 @@
+account Assets:Current Account
+account Assets:Savings
+account Equity:Opening Balances
+account Expenses:Books
+account Expenses:Car
+account Expenses:Cash
+account Expenses:Clothing
+account Expenses:Computer
+account Expenses:Council Tax
+account Expenses:Food
+account Expenses:Holiday
+account Expenses:Home
+account Expenses:Leisure
+account Expenses:Mobile Phone
+account Expenses:Mortgage
+account Expenses:Utilities:Energy
+account Expenses:Utilities:Water
+account Income:Interest
+account Income:Salary
+account Liabilities:Mastercard
+
+2013/01/01 * Opening Balance
+	Assets:Current Account		                £   100.00
+	Assets:Savings					                  £   500.00
+	Liabilities:Mastercard		                £  -250.00
+	Equity:Opening Balances
+
+2013/01/01 Salary
+  Assets:Current Account    £1,000.00
+  Income:Salary
+
+2013/01/02 Mortgage payment
+  Expenses:Mortgage   £446.52
+  Assets:Current Account
+
+2013/01/04 Tesco Store
+  Expenses:Food   £26.50
+  Liabilities:Mastercard
+
+2013/01/05 Savings
+  Assets:Savings    £100.00
+  Assets:Current Account
+
+2013/01/07 Southern Water
+  Expenses:Utilities:Water    £25.20
+  Assets:Current Account
+
+2013/01/08 Local Council Tax
+  Expenses:Council Tax    £64.00
+  Assets:Current Account
+
+2013/01/09 Gas & Electricity Supply 
+  Expenses:Utilities:Energy   £39.82
+  Assets:Current Account
+
+2013/01/13 Clothes
+  Expenses:Clothing   £37.50
+  Liabilities:Mastercard
+
+2013/01/13 Home Improvements
+  Expenses:Home    £20.18
+  Liabilities:Mastercard
+
+2013/01/16 Introduction to Accounting Book
+  Expenses:Books    £31.73
+  Liabilities:Mastercard
+
+2013/01/17 Ski Holiday
+  Expenses:Holiday    £314.37
+  Liabilities:Mastercard
+
+2013/01/24 ATM
+  Expenses:Cash   £40.00
+  Assets:Current Account
+
+2013/01/30 Credit Card Payment
+  Liabilities:Mastercard   £680.28
+  Assets:Current Account
+
+2013/02/01 Salary
+  Assets:Current Account    £1,000.00
+  Income:Salary
+
+2013/02/02 Mortgage payment
+  Expenses:Mortgage   £446.52
+  Assets:Current Account
+
+2013/02/05 Savings
+  Assets:Savings    £100.00
+  Assets:Current Account
+
+2013/02/07 Southern Water
+  Expenses:Utilities:Water    £25.20
+  Assets:Current Account
+
+2013/02/07 Tesco Store
+  Expenses:Food   £47.89
+  Liabilities:Mastercard
+
+2013/02/08 Local Council Tax
+  Expenses:Council Tax    £64.00
+  Assets:Current Account
+
+2013/02/09 Gas & Electricity Supply 
+  Expenses:Utilities:Energy   £39.82
+  Assets:Current Account
+
+2013/02/18 Tesco Store
+  Expenses:Food   £32.12
+  Liabilities:Mastercard
+
+2013/03/01 Salary
+  Assets:Current Account    £1,000.00
+  Income:Salary
+
+2013/03/02 Mortgage payment
+  Expenses:Mortgage   £446.52
+  Assets:Current Account
+
+2013/03/05 Savings
+  Assets:Savings    £100.00
+  Assets:Current Account
+
+2013/03/07 Southern Water
+  Expenses:Utilities:Water    £25.20
+  Assets:Current Account
+
+2013/03/08 Local Council Tax
+  Expenses:Council Tax    £64.00
+  Assets:Current Account
+
+2013/03/09 Gas & Electricity Supply 
+  Expenses:Utilities:Energy   £39.82
+  Assets:Current Account
+
+2013/03/11 Tesco Store
+  Expenses:Food   £36.21
+  Liabilities:Mastercard
+
+2013/04/01 Salary
+  Assets:Current Account    £1,000.00
+  Income:Salary
+
+2013/04/02 Mortgage payment
+  Expenses:Mortgage   £446.52
+  Assets:Current Account
+
+2013/04/05 Savings
+  Assets:Savings    £100.00
+  Assets:Current Account
+
+2013/04/06 Tesco Store
+  Expenses:Food   £23.74
+  Liabilities:Mastercard
+
+2013/04/07 Southern Water
+  Expenses:Utilities:Water    £25.20
+  Assets:Current Account
+
+2013/04/08 Local Council Tax
+  Expenses:Council Tax    £64.00
+  Assets:Current Account
+
+2013/04/09 Gas & Electricity Supply 
+  Expenses:Utilities:Energy   £39.82
+  Assets:Current Account
+
+2013/04/21 Tesco Store
+  Expenses:Food   £42.60
+  Liabilities:Mastercard
+
+2013/05/01 Salary
+  Assets:Current Account    £1,000.00
+  Income:Salary
+
+2013/05/02 Mortgage payment
+  Expenses:Mortgage   £446.52
+  Assets:Current Account
+
+2013/05/05 Savings
+  Assets:Savings    £100.00
+  Assets:Current Account
+
+2013/05/07 Southern Water
+  Expenses:Utilities:Water    £25.20
+  Assets:Current Account
+
+2013/05/08 Local Council Tax
+  Expenses:Council Tax    £64.00
+  Assets:Current Account
+
+2013/05/08 Tesco Store
+  Expenses:Food   £24.82
+  Liabilities:Mastercard
+
+2013/05/09 Gas & Electricity Supply 
+  Expenses:Utilities:Energy   £39.82
+  Assets:Current Account

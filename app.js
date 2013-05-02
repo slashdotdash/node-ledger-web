@@ -22,7 +22,7 @@ app.configure(function() {
   app.use(express.static(path.join(__dirname, 'public')));
   
   // Example ledger .dat file from the appendix of the Ledger 3 manual
-  var ledgerRest = new LedgerRest({ file: 'example/drewr.dat' });
+  var ledgerRest = new LedgerRest({ file: 'example/example.dat' });
   
   app.use('/api', function (req, res) {
     ledgerRest.server.server.emit('request', req, res);
@@ -38,6 +38,7 @@ app.get('/income', home.index);
 app.get('/spending', home.index);
 app.get('/worth', home.index);
 app.get('/balance', home.index);
+app.get('/balance/*', home.index);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
