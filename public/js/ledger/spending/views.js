@@ -16,10 +16,14 @@ Ledger.module('Spending.Views', function (Views, App, Backbone, Marionette, $, _
     },
         
     buildChart: function() {
-      var dateRange = this.collection.getDateRange();
-      var sourceData = this.chartData(dateRange);
-      if (sourceData.length === 0) return;
-     
+      if (this.collection.length == 0) { 
+        return;
+      }
+      
+      var dateRange = this.collection.getDateRange(),
+          sourceData = this.chartData(dateRange),
+          dateFormatting = this.dateFormatString(this.options.groupBy);
+      
       nv.addGraph(function() {
         var chart = nv.models.multiBarChart()
           .x(function(d) { return d.date })
@@ -28,7 +32,7 @@ Ledger.module('Spending.Views', function (Views, App, Backbone, Marionette, $, _
         chart.xAxis
           .axisLabel('Date')
           .showMaxMin(true)
-          .tickFormat(function(d) { return d3.time.format('%d/%m/%Y')(new Date(d)); });
+          .tickFormat(function(d) { return d3.time.format(dateFormatting)(new Date(d)); });
 
         chart.yAxis
           .axisLabel('Amount')
@@ -36,21 +40,24 @@ Ledger.module('Spending.Views', function (Views, App, Backbone, Marionette, $, _
 
         d3.select("#chart svg")
           .datum(sourceData)
-          .transition().duration(1200)
+          .transition().duration(100)
           .call(chart);
 
         return chart;
       });
     },
     
-    chartData: function(dateRange) {
-      if (this.collection.length == 0) { 
-        return []; 
+    dateFormatString: function(granularity) {
+      switch (granularity) {
+        case 'month': return '%B %Y';
+        case 'day': return '%d/%m/%Y';
       }
-
-      var expenses = this.collection.models;
       
-      expenses = this.totalByDate(dateRange, expenses, 'Expenses');
+      throw 'Date range granularity "' + granularity + '" is not supported';		  
+    },
+    
+    chartData: function(dateRange) {
+      var expenses = this.totalByDate(dateRange.between(this.options.groupBy), this.collection.models);
       
       return [
         { key: 'Spending', values: expenses }
@@ -58,23 +65,23 @@ Ledger.module('Spending.Views', function (Views, App, Backbone, Marionette, $, _
     },
     
     // Total amount for each date in the given range
-    totalByDate: function(dateRange, entries, type) {
+    totalByDate: function(dateRange, entries) {
       return _.map(dateRange, function(date) {
         return {
           date: date,
-          total: this.totalByDateAndAccount(entries, date, type)
+          total: this.totalByDateAndAccount(entries, date)
         };
       }, this);
     },
     
-    totalByDateAndAccount: function(entries, date, account) {
+    totalByDateAndAccount: function(entries, date) {
       var total = 0;
-      
+
       _.each(entries, function(entry) {
-        if (new Date(entry.get('date')).getTime() === date.getTime()) {
-          total += entry.totalByAccount(account);
+        if (entry.groupBy(this.options.groupBy) === date.getTime()) {
+          total += entry.totalAmount()
         }
-      });
+      }, this);
 
       return total;
 		}
