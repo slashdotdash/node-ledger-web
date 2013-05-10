@@ -111,61 +111,6 @@ Ledger.module('Income.Views', function (Views, App, Backbone, Marionette, $, _) 
 
       return total;
 		}
-        // 
-        // chartData: function() {
-        //   if (this.collection.length == 0) { 
-        //     return []; 
-        //   }
-        // 
-        //   var income = this.collection.filter(function(entry) { return entry.isIncome(); }),
-        //       expenses = this.collection.filter(function(entry) { return entry.isExpense(); });
-        // 
-        //   income = this.totalByDate(income, 'Income');
-        //   expenses = this.totalByDate(expenses, 'Expenses');
-        // 
-        //   income = this.groupByMonth(income);
-        //   expenses = this.groupByMonth(expenses);
-        //   
-        //   income = this.totalMonthly(income);
-        //   expenses = this.totalMonthly(expenses);
-        // 
-        //   return [
-        //     { key: 'Income', values: income }, 
-        //     { key: 'Expenses', values: expenses }
-        //   ];
-        // },
-        // 
-        // totalByDate: function(entries, type, adjustment) {
-        //   return _.map(entries, function(entry) {
-        //     return {
-        //       date: new Date(entry.get('date')),
-        //       total: entry.totalByAccount(type) * -1  // Invert amounts
-        //     };
-        //   });
-        // },
-        // 
-        // groupByMonth: function(entries) {
-        //   return _.groupBy(entries, function(entry) {
-        //     return new Date(entry.date.getFullYear(), entry.date.getMonth(), 1);
-        //   });
-        // },
-        // 
-        // totalMonthly: function(entries) {
-        //   var monthly = [];
-        //   
-        //   _.each(entries, function(value, key) {
-        //     var value = _.reduce(value, function(memo, v) { 
-        //       return memo + v.total; 
-        //     }, 0);
-        //     
-        //     monthly.push({
-        //       'label': key,
-        //       'value': value
-        //     });
-        //   });
-        //   
-        //   return monthly;
-        // }
   });
   
   
