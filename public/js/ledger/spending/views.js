@@ -2,6 +2,17 @@
 'use strict';
 
 Ledger.module('Spending.Views', function (Views, App, Backbone, Marionette, $, _) {
+  // Layout
+  // -----------
+  Views.Layout = Backbone.Marionette.Layout.extend({
+    template: "#template-spending-layout",
+
+    regions: {
+      chart: "#chart",
+      controls: "#controls"
+    }
+  });
+  
   // Expenditure Chart View
   // -----------
   Views.ExpenditureChartView = Backbone.Marionette.ItemView.extend({
@@ -9,12 +20,19 @@ Ledger.module('Spending.Views', function (Views, App, Backbone, Marionette, $, _
 		
     initialize: function() {
       this.listenTo(this.collection, 'all', this.buildChart, this);
+      this.listenTo(App.vent, 'spending:groupby', this.groupBy.bind(this));
     },
     
     onRender: function() {
       this.buildChart();
     },
-        
+    
+    // Group the chart data by the given date period (day, month, year)
+    groupBy: function(groupBy) {
+      this.options.groupBy = groupBy.name;
+      this.buildChart();
+    },
+
     buildChart: function() {
       if (this.collection.length == 0) { 
         return;
@@ -49,8 +67,9 @@ Ledger.module('Spending.Views', function (Views, App, Backbone, Marionette, $, _
     
     dateFormatString: function(granularity) {
       switch (granularity) {
-        case 'month': return '%B %Y';
         case 'day': return '%d/%m/%Y';
+        case 'month': return '%B %Y';
+        case 'year': return '%Y';
       }
       
       throw 'Date range granularity "' + granularity + '" is not supported';		  
@@ -85,5 +104,43 @@ Ledger.module('Spending.Views', function (Views, App, Backbone, Marionette, $, _
 
       return total;
 		}
+  });
+  
+  // Grouping Control Item View
+  // -----------
+  Views.GroupingControlItemView = Backbone.Marionette.ItemView.extend({
+    template: '#template-spending-grouping-item',
+    tagName: 'li',
+    events: {
+      'click': 'select'
+    },
+
+		initialize: function() {	
+		  this.listenTo(this.model, 'all', this.render, this);
+		},
+
+		onRender: function() {
+      if (this.model.get('active')) {
+        $(this.el).addClass('active');
+      } else {
+        $(this.el).removeClass('active');
+      }
+    },    
+		
+		select: function(e) {
+		  this.model.select();
+		  App.vent.trigger('spending:groupby', {name: this.model.get('name')});
+		  
+		  e.preventDefault();
+		  return false;
+		}		
+  });
+  
+  // Grouping Control View
+  // -----------  
+  Views.GroupingControlView = Backbone.Marionette.CompositeView.extend({
+    template: '#template-spending-grouping-control',
+    itemView: Views.GroupingControlItemView,
+    itemViewContainer: '#groupby'
   });
 });

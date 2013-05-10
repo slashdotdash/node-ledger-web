@@ -11,7 +11,9 @@ Ledger.module('Income', function (Income, App, Backbone, Marionette, $, _) {
 			postings: []
 		},
 
-		initialize: function () {	},
+		initialize: function () {
+		  _.extend(this, groupByDate(new Date(this.get('date'))));
+		},
 		
 		isIncome: function() {
 		  return _.any(this.get('postings'), function(posting) {
@@ -49,6 +51,36 @@ Ledger.module('Income', function (Income, App, Backbone, Marionette, $, _) {
 	// Aggregated Income + Expenses Collection
 	// ---------------	
 	Income.Aggregated = Backbone.Collection.extend({
-    model: Income.Entry
+    model: Income.Entry,
+    
+    getDateRange: function() {
+      var from = _.min(this.map(function(entry) { return entry.getDate(); })),
+          to = _.max(this.map(function(entry) { return entry.getDate(); }));
+
+      return new DateRange(from, to);
+    }
   });
+  
+  // GroupBy Model
+	// ----------
+	Income.GroupBy = Backbone.Model.extend({
+	  defaults: {
+	    name: '',
+	    active: false
+	  },
+	  
+	  select: function() {
+      this.set('active', true);
+	  }
+	});
+	
+	// Grouping Collection
+	// ---------------
+	Income.Grouping = Backbone.Collection.extend({
+		model: Income.GroupBy,
+		
+		initialize: function() {
+		  singleActiveItemBehaviour(this);
+		}
+	});
 });

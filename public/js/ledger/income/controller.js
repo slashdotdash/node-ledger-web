@@ -11,6 +11,14 @@ Ledger.module('Income', function (Income, App, Backbone, Marionette, $, _) {
 	});
 
   Income.Controller = function () {
+    this.controls = {
+      grouping: new Income.Grouping([
+        new Income.GroupBy({name: 'day'}),
+        new Income.GroupBy({name: 'month', active: true}),
+        new Income.GroupBy({name: 'year'})
+      ])
+    };
+    
 	  this.income = new Income.Income();
 	  this.expenses = new Income.Expenses();
 
@@ -24,8 +32,16 @@ Ledger.module('Income', function (Income, App, Backbone, Marionette, $, _) {
 	  }),
 	  
 		showIncome: function () {
-		  App.main.show(new Income.Views.IncomeVsExpenditureChartView({
-        collection: this.aggregated
+		  var layout = new Income.Views.Layout();
+      App.main.show(layout);
+      
+      layout.controls.show(new Income.Views.GroupingControlView({
+        collection: this.controls.grouping
+      }));
+
+      layout.chart.show(new Income.Views.IncomeVsExpenditureChartView({
+        collection: this.aggregated,
+        groupBy: 'month'
       }));
 		}
 	});

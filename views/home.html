@@ -46,6 +46,23 @@
 </script>
 
 <!-- Income -->
+<script type="text/html" id="template-income-layout">
+  <section>
+    <navigation id="controls" class="span2"> </navigation>
+    <article id="chart" class="span10"> </article>
+  </section>
+</script>
+
+<script type="text/html" id="template-income-grouping-control">
+  <ul id="groupby" class="nav nav-list">
+    <li class="nav-header">Group by</li>
+  </ul>
+</script>
+
+<script type="text/html" id="template-income-grouping-item">
+  <a href="#">{{name}}</a>
+</script>
+
 <script type="text/html" id="template-income-chart-view">
   <div id="chart">
     <svg style="height: 700px; width: 1000px"> </svg>
@@ -53,9 +70,26 @@
 </script>
 
 <!-- Spending -->
+<script type="text/html" id="template-spending-layout">
+  <section>
+    <navigation id="controls" class="span2"> </navigation>
+    <article id="chart" class="span10"> </article>
+  </section>
+</script>
+
+<script type="text/html" id="template-spending-grouping-control">
+  <ul id="groupby" class="nav nav-list">
+    <li class="nav-header">Group by</li>
+  </ul>
+</script>
+
+<script type="text/html" id="template-spending-grouping-item">
+  <a href="#">{{name}}</a>
+</script>
+
 <script type="text/html" id="template-spending-chart-view">
   <div id="chart">
-    <svg style="height: 700px; width: 1000px"> </svg>
+    <svg style="height: 700px; width: 970px"> </svg>
   </div>
 </script>
 
