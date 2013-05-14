@@ -39,11 +39,12 @@ Ledger.module('Spending.Views', function (Views, App, Backbone, Marionette, $, _
       }
       
       var dateRange = this.collection.getDateRange(),
-          sourceData = this.chartData(dateRange),
+          sourceData = this.chartData(dateRange, this.options.category),
           dateFormatting = this.dateFormatString(this.options.groupBy);
       
       nv.addGraph(function() {
         var chart = nv.models.multiBarChart()
+          .stacked(true)
           .x(function(d) { return d.date })
           .y(function(d) { return d.total });
 
@@ -75,12 +76,28 @@ Ledger.module('Spending.Views', function (Views, App, Backbone, Marionette, $, _
       throw 'Date range granularity "' + granularity + '" is not supported';		  
     },
     
-    chartData: function(dateRange) {
-      var expenses = this.totalByDate(dateRange.between(this.options.groupBy), this.collection.models);
-      
-      return [
-        { key: 'Spending', values: expenses }
-      ];
+    chartData: function(dateRange, category) {
+      if (category === 'account') {
+        // Show expenses per account
+        var data = [],
+            accounts = this.collection.getAccounts();
+
+        _.each(accounts, function(account) { 
+          data.push({
+            key: account.toString().substr(9),
+            values: this.totalByDate(dateRange.between(this.options.groupBy), this.collection.getByAccount(account))
+          });
+        }, this);
+
+        return data;
+      } else {
+        // Total expenses for all accounts
+        var expenses = this.totalByDate(dateRange.between(this.options.groupBy), this.collection.models);
+
+        return [
+          { key: 'Spending', values: expenses }
+        ];
+      }      
     },
     
     // Total amount for each date in the given range

@@ -37,7 +37,8 @@ Ledger.module('Spending', function (Spending, App, Backbone, Marionette, $, _) {
 
       layout.chart.show(new Spending.Views.ExpenditureChartView({
         collection: this.expenses,
-        groupBy: 'month'
+        groupBy: 'month',
+        category: 'account'
       }));
 		}
 	});

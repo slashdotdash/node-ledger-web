@@ -1,6 +1,7 @@
 var groupByDate = (function() {
   var groupByDate = function(date) {
     return {
+      // Get the time for the given date granularity to use for grouping dates together
       groupBy: function(granularity) {
   		  switch (granularity) {
           case 'month': return this.getMonth().getTime();

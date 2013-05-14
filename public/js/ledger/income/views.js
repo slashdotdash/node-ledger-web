@@ -45,7 +45,8 @@ Ledger.module('Income.Views', function (Views, App, Backbone, Marionette, $, _) 
           dateFormatting = this.dateFormatString(this.options.groupBy);
 
       nv.addGraph(function() {
-        var chart = nv.models.multiBarChart()
+        var chart = nv.models.multiBarChart()        
+          .stacked(true)
           .x(function(d) { return d.date })
           .y(function(d) { return d.total });
 
@@ -60,7 +61,7 @@ Ledger.module('Income.Views', function (Views, App, Backbone, Marionette, $, _) 
 
         d3.select("#chart svg")
           .datum(sourceData)
-          .transition().duration(1200)
+          .transition()
           .call(chart);
 
         return chart;
