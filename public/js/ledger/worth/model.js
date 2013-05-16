@@ -11,7 +11,9 @@ Ledger.module('Worth', function (Worth, App, Backbone, Marionette, $, _) {
 			postings: []
 		},
 
-		initialize: function () {	},
+		initialize: function () {
+		  _.extend(this, groupByDate(new Date(this.get('date'))));
+		},
 		
 		isAsset: function() {
 		  return _.any(this.get('postings'), function(posting) {
@@ -56,25 +58,10 @@ Ledger.module('Worth', function (Worth, App, Backbone, Marionette, $, _) {
     model: Worth.Entry,
         
     getDateRange: function() {
-      var minDate = _.min(this.map(function(entry) { return new Date(entry.get('date')); })),
-          maxDate = _.max(this.map(function(entry) { return new Date(entry.get('date')); }));
+      var from = _.min(this.map(function(entry) { return entry.getDate(); })),
+          to = _.max(this.map(function(entry) { return entry.getDate(); }));
 
-      return this.dateRange(minDate, maxDate);
-    },
-    
-    // Returns an array of dates between from and to.
-    dateRange: function(from, to) {
-      var current = from,
-          range = [];
-      
-      while (current < to) {
-        range.push(current);
-        
-        current = new Date(current);
-        current.setDate(current.getDate() + 1);
-      }
-      
-      return range;
-    }    
+      return new DateRange(from, to);
+    }
   });
 });

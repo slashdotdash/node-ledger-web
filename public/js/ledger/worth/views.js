@@ -11,17 +11,27 @@ Ledger.module('Worth.Views', function (Views, App, Backbone, Marionette, $, _) {
 		
     initialize: function() {
       this.listenTo(this.collection, 'all', this.buildChart, this);
+      this.listenTo(App.vent, 'controls:groupby', this.groupBy.bind(this));
     },
     
     onRender: function() {
       this.buildChart();
     },
-        
-    buildChart: function() {
-      var dateRange = this.collection.getDateRange();
-      var sourceData = this.chartData(dateRange);
 
-      if (sourceData.length === 0) return;
+    // Group the chart data by the given date period (day, month, year)
+    groupBy: function(groupBy) {
+      this.options.groupBy = groupBy.name;
+      this.buildChart();
+    },
+    
+    buildChart: function() {
+      if (this.collection.length == 0) { 
+        return;
+      }
+      
+      var dateRange = this.collection.getDateRange().between(this.options.groupBy),
+          sourceData = this.chartData(dateRange),
+          dateFormatting = this.dateFormatString(this.options.groupBy);
 
       nv.addGraph(function() {
         var chart = nv.models.linePlusBarChart()
@@ -30,7 +40,10 @@ Ledger.module('Worth.Views', function (Views, App, Backbone, Marionette, $, _) {
         chart.xAxis
           .axisLabel('Date')
           .tickFormat(function(d) {
-            return d3.time.format('%d/%m/%Y')(dateRange[d]); 
+            if (parseInt(d) === parseInt(d + 0.5)) {
+              return d3.time.format(dateFormatting)(dateRange[parseInt(d)]);
+            }
+            return '';
           });
 
         chart.y1Axis
@@ -43,18 +56,24 @@ Ledger.module('Worth.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         d3.select("#chart svg")
           .datum(sourceData)
-          .transition().duration(500)
+          .transition()
           .call(chart);
 
         return chart;
       });
     },
     
-    chartData: function(dateRange) {
-      if (this.collection.length == 0) { 
-        return []; 
+    dateFormatString: function(granularity) {
+      switch (granularity) {        
+        case 'day': return '%d/%m/%Y';
+        case 'month': return '%B %Y';
+        case 'year': return '%Y';
       }
+      
+      throw 'Date range granularity "' + granularity + '" is not supported';		  
+    },
 
+    chartData: function(dateRange) {
       var assets = this.collection.filter(function(entry) { return entry.isAsset(); }),
           liabilities = this.collection.filter(function(entry) { return entry.isLiability(); });
 
@@ -99,10 +118,10 @@ Ledger.module('Worth.Views', function (Views, App, Backbone, Marionette, $, _) {
       var total = 0;
       
       _.each(entries, function(entry) {
-        if (new Date(entry.get('date')).getTime() === date.getTime()) {
+        if (entry.groupBy(this.options.groupBy) === date.getTime()) {
           total += entry.totalByAccount(account);
         }
-      });
+      }, this);
 
       return total;
 		},

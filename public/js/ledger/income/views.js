@@ -2,17 +2,6 @@
 'use strict';
 
 Ledger.module('Income.Views', function (Views, App, Backbone, Marionette, $, _) {
-  // Layout
-  // -----------
-  Views.Layout = Backbone.Marionette.Layout.extend({
-    template: "#template-income-layout",
-
-    regions: {
-      chart: "#chart",
-      controls: "#controls"
-    }
-  });
-  
   // Income vs. Expenditure Chart View
   // -----------
   //
@@ -22,7 +11,7 @@ Ledger.module('Income.Views', function (Views, App, Backbone, Marionette, $, _) 
 		
     initialize: function() {
       this.listenTo(this.collection, 'all', this.buildChart, this);
-      this.listenTo(App.vent, 'income:groupby', this.groupBy.bind(this));
+      this.listenTo(App.vent, 'controls:groupby', this.groupBy.bind(this));
     },
     
     onRender: function() {
@@ -112,44 +101,5 @@ Ledger.module('Income.Views', function (Views, App, Backbone, Marionette, $, _) 
 
       return total;
 		}
-  });
-  
-  
-  // Grouping Control Item View
-  // -----------
-  Views.GroupingControlItemView = Backbone.Marionette.ItemView.extend({
-    template: '#template-income-grouping-item',
-    tagName: 'li',
-    events: {
-      'click': 'select'
-    },
-
-		initialize: function() {	
-		  this.listenTo(this.model, 'all', this.render, this);
-		},
-
-		onRender: function() {
-      if (this.model.get('active')) {
-        $(this.el).addClass('active');
-      } else {
-        $(this.el).removeClass('active');
-      }
-    },    
-		
-		select: function(e) {
-		  this.model.select();
-		  App.vent.trigger('income:groupby', {name: this.model.get('name')});
-		  
-		  e.preventDefault();
-		  return false;
-		}		
-  });
-  
-  // Grouping Control View
-  // -----------  
-  Views.GroupingControlView = Backbone.Marionette.CompositeView.extend({
-    template: '#template-income-grouping-control',
-    itemView: Views.GroupingControlItemView,
-    itemViewContainer: '#groupby'
   });
 });

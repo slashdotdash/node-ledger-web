@@ -13,6 +13,10 @@ Ledger.module('Worth', function (Worth, App, Backbone, Marionette, $, _) {
 	// Worth Controller
 	// ------------------------------
 	Worth.Controller = function () {
+	  this.controls = {
+      grouping: App.Controls.Grouping.defaults
+    };
+    
 	  this.assets = new Worth.Assets();
 	  this.liabilities = new Worth.Liabilities();
 
@@ -27,8 +31,16 @@ Ledger.module('Worth', function (Worth, App, Backbone, Marionette, $, _) {
 		}),
 
 		showNetWorth: function() {
-      App.main.show(new Worth.Views.NetWorthChartView({
-        collection: this.netWorth
+		  var layout = new App.Controls.Views.Layout();
+      App.main.show(layout);
+      
+      layout.controls.show(new App.Controls.Views.GroupingControlView({
+        collection: this.controls.grouping
+      }));
+
+      layout.chart.show(new Worth.Views.NetWorthChartView({
+        collection: this.netWorth,
+        groupBy: this.controls.grouping.active()
       }));
 		}
 	});

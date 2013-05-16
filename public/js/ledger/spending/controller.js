@@ -12,11 +12,7 @@ Ledger.module('Spending', function (Spending, App, Backbone, Marionette, $, _) {
 
   Spending.Controller = function () {
     this.controls = {
-      grouping: new Spending.Grouping([
-        new Spending.GroupBy({name: 'day'}),
-        new Spending.GroupBy({name: 'month', active: true}),
-        new Spending.GroupBy({name: 'year'})
-      ])
+      grouping: App.Controls.Grouping.defaults
     };
     
 	  this.expenses = new Spending.Expenses();
@@ -28,16 +24,16 @@ Ledger.module('Spending', function (Spending, App, Backbone, Marionette, $, _) {
 	  }),
 	  
 		showSpending: function () {
-		  var layout = new Spending.Views.Layout();
+		  var layout = new App.Controls.Views.Layout();
       App.main.show(layout);
       
-      layout.controls.show(new Spending.Views.GroupingControlView({
+      layout.controls.show(new App.Controls.Views.GroupingControlView({
         collection: this.controls.grouping
       }));
 
       layout.chart.show(new Spending.Views.ExpenditureChartView({
         collection: this.expenses,
-        groupBy: 'month',
+        groupBy: this.controls.grouping.active(),
         category: 'account'
       }));
 		}

@@ -60,27 +60,4 @@ Ledger.module('Income', function (Income, App, Backbone, Marionette, $, _) {
       return new DateRange(from, to);
     }
   });
-  
-  // GroupBy Model
-	// ----------
-	Income.GroupBy = Backbone.Model.extend({
-	  defaults: {
-	    name: '',
-	    active: false
-	  },
-	  
-	  select: function() {
-      this.set('active', true);
-	  }
-	});
-	
-	// Grouping Collection
-	// ---------------
-	Income.Grouping = Backbone.Collection.extend({
-		model: Income.GroupBy,
-		
-		initialize: function() {
-		  singleActiveItemBehaviour(this);
-		}
-	});
 });
