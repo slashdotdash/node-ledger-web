@@ -23,11 +23,7 @@ Ledger.module('Dashboard', function (Dashboard, App, Backbone, Marionette, $, _)
 
     // Select the activated section on navigation
     App.vent.on('section:activated', function(params) {
-      this.sections.forEach(function(model) {
-        if (model.get('name') === params.name) {
-          model.select();
-        }
-      });
+      this.sections.activate(params.name);
     }, this);
 	};
 

@@ -27,10 +27,10 @@ Ledger.module('Spending.Views', function (Views, App, Backbone, Marionette, $, _
         return;
       }
       
-      var dateRange = this.collection.getDateRange(),
+      var dateRange = this.collection.getDateRange().between(this.options.groupBy),
           sourceData = this.chartData(dateRange, this.options.category),
           dateFormatting = this.dateFormatString(this.options.groupBy);
-      
+
       nv.addGraph(function() {
         var chart = nv.models.multiBarChart()
           .stacked(true)
@@ -74,14 +74,14 @@ Ledger.module('Spending.Views', function (Views, App, Backbone, Marionette, $, _
         _.each(accounts, function(account) { 
           data.push({
             key: account.toString().substr(9),
-            values: this.totalByDate(dateRange.between(this.options.groupBy), this.collection.getByAccount(account))
+            values: this.totalByDate(dateRange, this.collection.getByAccount(account))
           });
         }, this);
 
         return data;
       } else {
         // Total expenses for all accounts
-        var expenses = this.totalByDate(dateRange.between(this.options.groupBy), this.collection.models);
+        var expenses = this.totalByDate(dateRange, this.collection.models);
 
         return [
           { key: 'Spending', values: expenses }

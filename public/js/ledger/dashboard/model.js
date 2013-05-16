@@ -23,6 +23,12 @@ Ledger.module('Dashboard', function (Dashboard, App, Backbone) {
 		
 		initialize: function() {
 		  singleActiveItemBehaviour(this);
+		},
+		
+		activate: function(name) {
+		  if (name && name.length !== 0) {
+		    this.findWhere({name: name}).select();
+		  }
 		}
 	});
 });

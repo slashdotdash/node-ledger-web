@@ -91,7 +91,7 @@ Ledger.module('Worth.Views', function (Views, App, Backbone, Marionette, $, _) {
       var netWorth = this.cumulativeByDate(dateRange, [assets, liabilities]);
 
       return [
-        { key: 'Assets and Liabilities', values: this.convertToCoordinates(assetsPlusLiabilities), bar: true }, 
+        { key: 'Assets minus Liabilities', values: this.convertToCoordinates(assetsPlusLiabilities), bar: true }, 
         // { key: 'Assets', values: this.convertToCoordinates(assets), bar: true }, 
         // { key: 'Liabilities', values: this.convertToCoordinates(liabilities), bar: true },
         { key: 'Net Worth', values: this.convertToCoordinates(netWorth) }

@@ -65,27 +65,4 @@ Ledger.module('Spending', function (Spending, App, Backbone, Marionette, $, _) {
       });
     }
 	});
-
-  // GroupBy Model
-	// ----------
-	Spending.GroupBy = Backbone.Model.extend({
-	  defaults: {
-	    name: '',
-	    active: false
-	  },
-	  
-	  select: function() {
-      this.set('active', true);
-	  }
-	});
-	
-	// Grouping Collection
-	// ---------------
-	Spending.Grouping = Backbone.Collection.extend({
-		model: Spending.GroupBy,
-		
-		initialize: function() {
-		  singleActiveItemBehaviour(this);
-		}
-	});
 });

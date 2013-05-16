@@ -27,6 +27,12 @@ Ledger.module('Controls', function (Controls, App, Backbone, Marionette, $, _) {
 		// Get the currently active groupby
 		active: function() {
 		  return this.findWhere({active: true}).get('name');
+		},
+		
+		activate: function(name) {
+		  if (name && name.length !== 0) {
+		    this.findWhere({name: name}).select();
+	    }
 		}
 	});
 

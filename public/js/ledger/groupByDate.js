@@ -21,7 +21,7 @@ var groupByDate = (function() {
       },
       
       getYear: function() {
-        return new Date(date.getFullYear(), 1, 1);
+        return new Date(date.getFullYear(), 0, 1);
       }
     };
   }

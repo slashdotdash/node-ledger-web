@@ -29,8 +29,6 @@ Ledger.module('Dashboard.Views', function (Views, App, Backbone, Marionette, $) 
       }
     },    
 
-		destroy: function() { },
-		
 		select: function(e) {
 		  this.model.select();
 		  

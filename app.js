@@ -33,12 +33,17 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', home.index);
-app.get('/income', home.index);
-app.get('/spending', home.index);
-app.get('/worth', home.index);
-app.get('/balance', home.index);
-app.get('/balance/*', home.index);
+var routes = [
+  '/',
+  '/income', '/income/*',
+  '/spending', '/spending/*',
+  '/worth', '/worth/*',
+  '/balance', '/balance/*',
+];
+
+_.each(routes, function(route) {
+  app.get(route, home.index);
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

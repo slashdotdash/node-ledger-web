@@ -7,12 +7,29 @@ var DateRange = (function() {
   // Returns an array of dates between from and to.
   DateRange.prototype.between = function(granularity) {
     switch (granularity) {
+      case 'year': return this.yearsBetween();
       case 'month': return this.monthsBetween();
       case 'day': return this.daysBetween();
     }
     
     throw 'Date range granularity "' + granularity + '" is not supported';
   }
+
+  // Returns an array of years between from and to.
+  DateRange.prototype.yearsBetween = function() {
+    var current = this.from.getFullYear(),
+        toYear = this.to.getFullYear();
+        range = [];
+
+    while (current <= toYear) {
+      range.push(new Date(current, 0, 1));
+
+      // Move to the next year
+      current += 1;
+    }
+    
+    return range;
+  };
 
   // Returns an array of months between from and to.
   DateRange.prototype.monthsBetween = function() {
