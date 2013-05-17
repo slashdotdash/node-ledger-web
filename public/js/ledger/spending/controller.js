@@ -6,8 +6,8 @@ Ledger.module('Spending', function (Spending, App, Backbone, Marionette, $, _) {
 	// ---------------
 	Spending.Router = Marionette.AppRouter.extend({
 		appRoutes: {
-		  'spending': 'showSpending'
-		}		
+		  'spending(/:groupBy)': 'showSpending'
+		}
 	});
 
   Spending.Controller = function () {
@@ -23,7 +23,9 @@ Ledger.module('Spending', function (Spending, App, Backbone, Marionette, $, _) {
 		  this.expenses.fetch({reset: true});
 	  }),
 	  
-		showSpending: function () {
+		showSpending: function (groupBy) {
+		  this.controls.grouping.activate(groupBy);
+		  
 		  var layout = new App.Controls.Views.Layout();
       App.main.show(layout);
       
@@ -33,7 +35,7 @@ Ledger.module('Spending', function (Spending, App, Backbone, Marionette, $, _) {
 
       layout.chart.show(new Spending.Views.ExpenditureChartView({
         collection: this.expenses,
-        groupBy: this.controls.grouping.active(),
+        groupBy: groupBy || this.controls.grouping.active(),
         category: 'account'
       }));
 		}
@@ -52,8 +54,7 @@ Ledger.module('Spending', function (Spending, App, Backbone, Marionette, $, _) {
 		  controller.start();
 		});
 
-    this.listenTo(router, 'route', function(page) {
-      App.vent.trigger('section:activated', {name: 'spending'});
-    });
+    // Update groupBy param in URL when changed
+    new ControlNavigation(this, App.vent, router, 'spending');
   });
 });

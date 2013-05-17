@@ -6,7 +6,7 @@ Ledger.module('Worth', function (Worth, App, Backbone, Marionette, $, _) {
 	// ---------------
 	Worth.Router = Marionette.AppRouter.extend({
 		appRoutes: {
-		  'worth': 'showNetWorth'
+		  'worth(/:groupBy)': 'showNetWorth'
 		}		
 	});
 
@@ -30,7 +30,9 @@ Ledger.module('Worth', function (Worth, App, Backbone, Marionette, $, _) {
       this.liabilities.fetch({reset: true});
 		}),
 
-		showNetWorth: function() {
+		showNetWorth: function(groupBy) {
+		  this.controls.grouping.activate(groupBy);
+		  
 		  var layout = new App.Controls.Views.Layout();
       App.main.show(layout);
       
@@ -40,7 +42,7 @@ Ledger.module('Worth', function (Worth, App, Backbone, Marionette, $, _) {
 
       layout.chart.show(new Worth.Views.NetWorthChartView({
         collection: this.netWorth,
-        groupBy: this.controls.grouping.active()
+        groupBy: groupBy || this.controls.grouping.active()
       }));
 		}
 	});
@@ -58,8 +60,7 @@ Ledger.module('Worth', function (Worth, App, Backbone, Marionette, $, _) {
 		  controller.start();
 		});
 		
-		this.listenTo(router, 'route', function(page) {
-      App.vent.trigger('section:activated', {name: 'worth'});
-    });
+		// Update groupBy param in URL when changed
+    new ControlNavigation(this, App.vent, router, 'worth');
 	});
 });
