@@ -1,17 +1,23 @@
-/*global Ledger */
-Ledger.module('Dashboard.Views', function (Views, App, Backbone, Marionette, $) {
+/*global define */
+
+define([
+    'tpl!dashboard/template-dashboard-view.html', 
+    'tpl!dashboard/template-dashboard-nav-item-view.html',
+    'tpl!dashboard/template-dashboard-nav-view.html',
+    'backbone', 'marionette', 'vent', 'jquery', 'underscore'], 
+  function(DashboardTemplate, NavItemTemplate, NavigationTemplate, Backbone, Marionette, vent, $, _) {
   'use strict';
 
   // Dashboard View
   // --------------
-  Views.DashboardView = Marionette.ItemView.extend({
-    template: '#template-dashboard-view'
+  var DashboardView = Marionette.ItemView.extend({
+    template: DashboardTemplate
   });
-  
+
 	// Dashboard Navigation Item View
 	// -------------------
-	Views.NavigationItemView = Marionette.ItemView.extend({
-	  template: '#template-dashboard-nav-item-view',
+	var NavigationItemView = Marionette.ItemView.extend({
+    template: NavItemTemplate,
 	  tagName: 'li',
 		events: {
 		  'click': 'select'
@@ -39,15 +45,21 @@ Ledger.module('Dashboard.Views', function (Views, App, Backbone, Marionette, $) 
 	
 	// Dashboard Navigation Item View
 	// -------------------
-	Views.NavigationView = Backbone.Marionette.CompositeView.extend({
-    itemView: Views.NavigationItemView,
+	var NavigationView = Backbone.Marionette.CompositeView.extend({
+    itemView: NavigationItemView,
     itemViewContainer: 'ul.nav',
-    template: '#template-dashboard-nav-view',
+    template: NavigationTemplate,
     tagName: 'div',
     className: 'navbar-inner',
     
     initialize: function() {	
 		  this.listenTo(this.collection, 'change', this.render, this);
 		}
-  });  
+  });
+  
+  return {
+    Dashboard: DashboardView,
+    NavigationItem: NavigationItemView,
+    Navigation: NavigationView
+  }
 });

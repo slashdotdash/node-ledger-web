@@ -1,17 +1,22 @@
-/*global Ledger */
-'use strict';
+/*global define */
 
-Ledger.module('Worth.Views', function (Views, App, Backbone, Marionette, $, _) {
+define([
+    'tpl!charting/template-chart-container.html', 
+    'nvd3',
+    'backbone', 'marionette', 'vent', 'jquery', 'underscore'], 
+  function(ChartTemplate, nv, Backbone, Marionette, vent, $, _) {
+  'use strict';
+
   // Net Worth Chart View
   // --------------------
   //
   // Display an nvd3 chart of assets and liabilities (total = net worth).
-  Views.NetWorthChartView = Backbone.Marionette.ItemView.extend({
-    template: '#template-net-worth-chart-view',
+  var NetWorthChartView = Backbone.Marionette.ItemView.extend({
+    template: ChartTemplate,
 		
     initialize: function() {
       this.listenTo(this.collection, 'all', this.buildChart, this);
-      this.listenTo(App.vent, 'controls:groupby', this.groupBy.bind(this));
+      this.listenTo(vent, 'controls:groupby', this.groupBy.bind(this));
     },
     
     onRender: function() {
@@ -145,4 +150,8 @@ Ledger.module('Worth.Views', function (Views, App, Backbone, Marionette, $, _) {
       });
     }    
   });
+  
+  return {
+    NetWorthChartView: NetWorthChartView
+  };
 });

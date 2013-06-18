@@ -34,6 +34,7 @@
     "express": "3.1.0",
     "ledger-rest": "0.0.3",
     "ejs-locals": "~1.0.2",
-    "lodash": "~1.1.1"
+    "lodash": "~1.1.1",
+    "restify": "~2.5.1"
   }
 }

@@ -1,16 +1,22 @@
-/*global Ledger */
-'use strict';
+/*global define */
 
-Ledger.module('Balance.Views', function (Views, App, Backbone, Marionette, $) {
-  Views.FilterChartItemView = Marionette.ItemView.extend({
-    template: '#template-balance-chart-filter-item-view',
+define([
+    'tpl!balance/template-balance-chart-filter-item-view.html',
+    'tpl!balance/template-balance-chart-view.html',
+    'nvd3',
+    'backbone', 'marionette', 'vent', 'jquery', 'underscore'], 
+  function(FilterItemTemplate, ChartTemplate, nv, Backbone, Marionette, vent, $, _) {
+  'use strict';
+
+  var FilterChartItemView = Marionette.ItemView.extend({
+    template: FilterItemTemplate,
     tagName: 'li',
     events: {
       'click': 'filter'
     },
     
     filter: function(e) {
-      App.vent.trigger('balance:filter', {name: this.model.fullname()});
+      vent.trigger('balance:filter', {name: this.model.fullname()});
       e.preventDefault();
     }
   });
@@ -19,14 +25,14 @@ Ledger.module('Balance.Views', function (Views, App, Backbone, Marionette, $) {
   // -----------
   //
   // Display an nvd3 chart of the balance
-  Views.ChartView = Backbone.Marionette.CompositeView.extend({
-    template: '#template-balance-chart-view',
-    itemView: Views.FilterChartItemView,
+  var ChartView = Backbone.Marionette.CompositeView.extend({
+    template: ChartTemplate,
+    itemView: FilterChartItemView,
     itemViewContainer: '#filter',
 		
     initialize: function() {
       this.listenTo(this.collection, 'all', this.buildChart, this);
-      this.listenTo(App.vent, 'balance:filter', this.magnify.bind(this));
+      this.listenTo(vent, 'balance:filter', this.magnify.bind(this));
     },
     
     onRender: function() {
@@ -50,13 +56,14 @@ Ledger.module('Balance.Views', function (Views, App, Backbone, Marionette, $) {
         var chart = nv.models.pieChart()
           .x(function(d) { return d.label })
           .y(function(d) { return d.value })
+          .values(function(d) { return d })
           .showLabels(true)
           .labelThreshold(.05)
           .donut(true);
 
           d3.select("#chart svg")
-            .datum(sourceData)
-            .transition().duration(1200)
+            .datum([sourceData])
+            .transition()
             .call(chart);
 
         return chart;
@@ -67,16 +74,17 @@ Ledger.module('Balance.Views', function (Views, App, Backbone, Marionette, $) {
       var values = this.collection
         .map(function(entry) {
           return {
-            'label': entry.get('account').shortname,
-            'value': Math.abs(entry.get('total').amount)
+            label: entry.get('account').shortname,
+            value: Math.abs(entry.get('total').amount)
           };
         });
 
-      return [{
-        map: function() { },
-        key: 'Balance',
-        values: values
-      }];
+      return values;
     }
   });
+  
+  return {
+    FilterChartItemView: FilterChartItemView,
+    ChartView: ChartView
+  };
 });

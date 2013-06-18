@@ -1,27 +1,28 @@
-/*global Ledger */
-Ledger.module('Income', function (Income, App, Backbone, Marionette, $, _) {
-  'use strict';
-  
-	// Income Router
-	// ---------------
-	Income.Router = Marionette.AppRouter.extend({
-		appRoutes: {
-		  'income(/:groupBy)': 'showIncome'
-		}		
-	});
+/*global define */
 
-  Income.Controller = function () {
+define([
+    'ledger', 
+    'income/model', 
+    'income/views',
+    'controls/model',
+    'controls/views',
+    'aggregateCollection',
+    'backbone', 'marionette', 'vent', 'jquery', 'underscore'], 
+  function(Ledger, Models, Views, Controls, ControlViews, AggregateCollection, Backbone, Marionette, vent, $, _) {
+  'use strict';
+
+  var Controller = function () {
     this.controls = {
-      grouping: App.Controls.Grouping.defaults
+      grouping: Controls.defaults
     };
     
-	  this.income = new Income.Income();
-	  this.expenses = new Income.Expenses();
+	  this.income = new Models.Income();
+	  this.expenses = new Models.Expenses();
 
-    this.aggregated = AggregateCollection(Income.Aggregated, [this.income, this.expenses]);
+    this.aggregated = AggregateCollection(Models.Aggregated, [this.income, this.expenses]);
 	};
 
-	_.extend(Income.Controller.prototype, {
+	_.extend(Controller.prototype, {
 	  start: _.once(function() {
 	    this.income.fetch({reset: true});
 		  this.expenses.fetch({reset: true});
@@ -30,34 +31,19 @@ Ledger.module('Income', function (Income, App, Backbone, Marionette, $, _) {
 		showIncome: function(groupBy) {
 		  this.controls.grouping.activate(groupBy);
 		  
-		  var layout = new App.Controls.Views.Layout();
-      App.main.show(layout);
+		  var layout = new ControlViews.Layout();
+      Ledger.main.show(layout);
       
-      layout.controls.show(new App.Controls.Views.GroupingControlView({
+      layout.controls.show(new ControlViews.GroupingControlView({
         collection: this.controls.grouping
       }));
       
-      layout.chart.show(new Income.Views.IncomeVsExpenditureChartView({
+      layout.chart.show(new Views.IncomeVsExpenditureChartView({
         collection: this.aggregated,
         groupBy: groupBy || this.controls.grouping.active()
       }));
 		}
 	});
 	
-  // Income Initializer
-  // -----------
-  Income.addInitializer(function(){
-		var controller = new Income.Controller(),
-		    router = new Income.Router({ controller: controller	});
-
-		controller.router = router;
-
-		// Start the controller on first route to this module
-		this.listenToOnce(router, 'route', function() {
-		  controller.start();
-		});
-
-    // Update groupBy param in URL when changed
-    new ControlNavigation(this, App.vent, router, 'income');
-  });
+	return Controller;
 });

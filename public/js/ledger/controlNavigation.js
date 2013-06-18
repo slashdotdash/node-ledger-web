@@ -1,4 +1,4 @@
-var ControlNavigation = (function() {
+define(function() {
   var ControlNavigation = function(module, vent, router, section) {
     this.vent = vent;
     this.router = router;
@@ -10,6 +10,7 @@ var ControlNavigation = (function() {
   
   ControlNavigation.prototype.initialize = function(module) {
     var self = this;
+    
     module.listenTo(this.router, 'route', function(page) {
       self.vent.trigger('section:activated', {name: self.section});
     });
@@ -26,6 +27,5 @@ var ControlNavigation = (function() {
     });
   };
   
-  return ControlNavigation;
-})();
-  
+  return ControlNavigation;  
+});

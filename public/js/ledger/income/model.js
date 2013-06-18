@@ -1,10 +1,12 @@
-/*global Ledger */
-Ledger.module('Income', function (Income, App, Backbone, Marionette, $, _) {
+/*global define */
+
+define(['groupByDate', 'dateRange', 'backbone', 'marionette', 'jquery', 'underscore'], 
+  function(groupByDate, DateRange, Backbone, Marionette, $, _) {
   'use strict';
-  
+
 	// Income + Expenses Entry Model
 	// ----------
-	Income.Entry = Backbone.Model.extend({
+	var Entry = Backbone.Model.extend({
 		defaults: {
 		  date: null,
 		  payee: '',
@@ -36,22 +38,22 @@ Ledger.module('Income', function (Income, App, Backbone, Marionette, $, _) {
 
 	// Income Collection
 	// ---------------
-	Income.Income = Backbone.Collection.extend({
-		model: Income.Entry,
+	var Income = Backbone.Collection.extend({
+		model: Entry,
 		url: '/api/register/Income'
 	});
 	
 	// Expenses Collection
 	// ---------------
-	Income.Expenses = Backbone.Collection.extend({
-		model: Income.Entry,
+	var Expenses = Backbone.Collection.extend({
+		model: Entry,
 		url: '/api/register/Expenses'
 	});
 
 	// Aggregated Income + Expenses Collection
 	// ---------------	
-	Income.Aggregated = Backbone.Collection.extend({
-    model: Income.Entry,
+	var Aggregated = Backbone.Collection.extend({
+    model: Entry,
     
     getDateRange: function() {
       var from = _.min(this.map(function(entry) { return entry.getDate(); })),
@@ -60,4 +62,11 @@ Ledger.module('Income', function (Income, App, Backbone, Marionette, $, _) {
       return new DateRange(from, to);
     }
   });
+  
+  return {
+    Entry: Entry,    
+    Income: Income,
+    Expenses: Expenses,
+    Aggregated: Aggregated
+  };
 });

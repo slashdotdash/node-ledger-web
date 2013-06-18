@@ -1,17 +1,22 @@
-/*global Ledger */
-'use strict';
+/*global define */
 
-Ledger.module('Income.Views', function (Views, App, Backbone, Marionette, $, _) {
+define([
+    'tpl!charting/template-chart-container.html', 
+    'nvd3',
+    'backbone', 'marionette', 'vent', 'jquery', 'underscore'], 
+  function(ChartTemplate, nv, Backbone, Marionette, vent, $, _) {
+  'use strict';
+
   // Income vs. Expenditure Chart View
   // -----------
   //
   // Display an nvd3 chart of income vs. spending.
-  Views.IncomeVsExpenditureChartView = Backbone.Marionette.ItemView.extend({
-    template: '#template-income-chart-view',
+  var IncomeVsExpenditureChartView = Marionette.ItemView.extend({
+    template: ChartTemplate,
 		
     initialize: function() {
       this.listenTo(this.collection, 'all', this.buildChart, this);
-      this.listenTo(App.vent, 'controls:groupby', this.groupBy.bind(this));
+      this.listenTo(vent, 'controls:groupby', this.groupBy.bind(this));
     },
     
     onRender: function() {
@@ -102,4 +107,8 @@ Ledger.module('Income.Views', function (Views, App, Backbone, Marionette, $, _) 
       return total;
 		}
   });
+  
+  return {
+    IncomeVsExpenditureChartView: IncomeVsExpenditureChartView
+  };
 });

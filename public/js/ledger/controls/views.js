@@ -1,11 +1,17 @@
-/*global Ledger */
-'use strict';
+/*global define */
 
-Ledger.module('Controls.Views', function (Views, App, Backbone, Marionette, $, _) {
+define([
+    'tpl!controls/template-charting-layout.html',
+    'tpl!controls/template-controls-grouping-item.html',
+    'tpl!controls/template-controls-grouping-control.html',
+    'backbone', 'marionette', 'vent', 'jquery', 'underscore'], 
+  function(ChartingLayout, GroupingItemTemplate, GroupingTemplate, Backbone, Marionette, vent, $, _) {
+  'use strict';
+
   // Layout
   // -----------
-  Views.Layout = Backbone.Marionette.Layout.extend({
-    template: "#template-charting-layout",
+  var Layout = Marionette.Layout.extend({
+    template: ChartingLayout,
 
     regions: {
       chart: "#chart",
@@ -15,8 +21,8 @@ Ledger.module('Controls.Views', function (Views, App, Backbone, Marionette, $, _
   
   // Grouping Control Item View
   // -----------
-  Views.GroupingControlItemView = Backbone.Marionette.ItemView.extend({
-    template: '#template-controls-grouping-item',
+  var GroupingControlItemView = Marionette.ItemView.extend({
+    template: GroupingItemTemplate,
     tagName: 'li',
     events: {
       'click': 'select'
@@ -36,7 +42,7 @@ Ledger.module('Controls.Views', function (Views, App, Backbone, Marionette, $, _
 		
 		select: function(e) {
 		  this.model.select();
-		  App.vent.trigger('controls:groupby', {name: this.model.get('name')});
+		  vent.trigger('controls:groupby', {name: this.model.get('name')});
 		  
 		  e.preventDefault();
 		  return false;
@@ -45,9 +51,15 @@ Ledger.module('Controls.Views', function (Views, App, Backbone, Marionette, $, _
   
   // Grouping Control View
   // -----------  
-  Views.GroupingControlView = Backbone.Marionette.CompositeView.extend({
-    template: '#template-controls-grouping-control',
-    itemView: Views.GroupingControlItemView,
+  var GroupingControlView = Marionette.CompositeView.extend({
+    template: GroupingTemplate,
+    itemView: GroupingControlItemView,
     itemViewContainer: '#groupby'
   });
+  
+  return {
+    Layout: Layout,
+    GroupingControlItemView: GroupingControlItemView,
+    GroupingControlView: GroupingControlView
+  };
 });

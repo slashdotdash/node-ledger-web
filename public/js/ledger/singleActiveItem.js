@@ -1,5 +1,5 @@
-// Ensure only one model in the collection is active at any time
-var singleActiveItemBehaviour = (function() {
+define(function() {
+  // Ensure only one model in the collection is active at any time
   var activeToggled = function(model, value, options) {
 	  if (value === true) {
 	    this.forEach(function(m) {
@@ -9,8 +9,8 @@ var singleActiveItemBehaviour = (function() {
 	    });
 	  }
 	};
-	
+
 	return function(collection) {
     collection.listenTo(collection, 'change:active', activeToggled, collection);
   };
-})();
+});

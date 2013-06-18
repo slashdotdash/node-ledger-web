@@ -1,10 +1,12 @@
-/*global Ledger */
-Ledger.module('Controls', function (Controls, App, Backbone, Marionette, $, _) {
+/*global define */
+
+define(['singleActiveItem', 'backbone', 'marionette', 'jquery', 'underscore'], 
+  function(singleActiveItem, Backbone, Marionette, $, _) {
   'use strict';
 
   // GroupBy Model
 	// ----------
-	Controls.GroupBy = Backbone.Model.extend({
+	var GroupBy = Backbone.Model.extend({
 	  defaults: {
 	    name: '',
 	    active: false
@@ -17,11 +19,11 @@ Ledger.module('Controls', function (Controls, App, Backbone, Marionette, $, _) {
 	
 	// Grouping Collection
 	// ---------------
-	Controls.Grouping = Backbone.Collection.extend({
-		model: Controls.GroupBy,
+	var Grouping = Backbone.Collection.extend({
+		model: GroupBy,
 		
 		initialize: function() {
-		  singleActiveItemBehaviour(this);
+		  singleActiveItem(this);
 		},
 		
 		// Get the currently active groupby
@@ -38,9 +40,15 @@ Ledger.module('Controls', function (Controls, App, Backbone, Marionette, $, _) {
 
 	// Default Grouping Collection
 	// ---------------	
-	Controls.Grouping.defaults = new Controls.Grouping([
-    new Controls.GroupBy({name: 'day'}),
-    new Controls.GroupBy({name: 'month', active: true}),
-    new Controls.GroupBy({name: 'year'})
-  ]);  
+	var defaults = new Grouping([
+    new GroupBy({name: 'day'}),
+    new GroupBy({name: 'month', active: true}),
+    new GroupBy({name: 'year'})
+  ]);
+  
+  return {
+    GroupBy: GroupBy,
+    Grouping: Grouping,
+    defaults: defaults
+  };
 });

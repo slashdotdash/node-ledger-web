@@ -1,4 +1,4 @@
-var groupByDate = (function() {
+define(function() {
   var groupByDate = function(date) {
     return {
       // Get the time for the given date granularity to use for grouping dates together
@@ -27,4 +27,4 @@ var groupByDate = (function() {
   }
   
   return groupByDate;
-})();
+});

@@ -1,0 +1,15 @@
+{
+  "name": "node-ledger-web",
+  "version": "0.0.1",
+  "dependencies": {
+    "bootstrap": "git://github.com/twitter/bootstrap.git#2.3.2",
+    "modernizr": "git://github.com/Modernizr/Modernizr.git#2.6.2",
+    "jquery": "git://github.com/components/jquery.git#1.9.1",
+    "backbone": "git://github.com/documentcloud/backbone.git#1.0.0",
+    "backbone.marionette": "git://github.com/marionettejs/backbone.marionette#~1.0.3",
+    "handlebars": "git://github.com/components/handlebars.js#1.0.0-rc.4",
+    "nvd3": "git://github.com/novus/nvd3",
+    "requirejs": "git://github.com/jrburke/requirejs#2.1.6",
+    "requirejs-tpl": "latest"
+  }
+}

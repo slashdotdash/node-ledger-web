@@ -1,24 +1,24 @@
-/*global Ledger */
-Ledger.module('Spending', function (Spending, App, Backbone, Marionette, $, _) {
+/*global define */
+
+define([
+    'ledger', 
+    'spending/model', 
+    'spending/views',
+    'controls/model',
+    'controls/views',
+    'backbone', 'marionette', 'vent', 'jquery', 'underscore'], 
+  function(Ledger, Models, Views, Controls, ControlViews, Backbone, Marionette, vent, $, _) {
   'use strict';
   
-	// Spending Router
-	// ---------------
-	Spending.Router = Marionette.AppRouter.extend({
-		appRoutes: {
-		  'spending(/:groupBy)': 'showSpending'
-		}
-	});
-
-  Spending.Controller = function () {
+  var Controller = function () {
     this.controls = {
-      grouping: App.Controls.Grouping.defaults
+      grouping: Controls.defaults
     };
     
-	  this.expenses = new Spending.Expenses();
+	  this.expenses = new Models.Expenses();
 	};
 
-	_.extend(Spending.Controller.prototype, {
+	_.extend(Controller.prototype, {
 	  start: _.once(function() {
 		  this.expenses.fetch({reset: true});
 	  }),
@@ -26,14 +26,14 @@ Ledger.module('Spending', function (Spending, App, Backbone, Marionette, $, _) {
 		showSpending: function (groupBy) {
 		  this.controls.grouping.activate(groupBy);
 		  
-		  var layout = new App.Controls.Views.Layout();
-      App.main.show(layout);
+		  var layout = new ControlViews.Layout();
+      Ledger.main.show(layout);
       
-      layout.controls.show(new App.Controls.Views.GroupingControlView({
+      layout.controls.show(new ControlViews.GroupingControlView({
         collection: this.controls.grouping
       }));
 
-      layout.chart.show(new Spending.Views.ExpenditureChartView({
+      layout.chart.show(new Views.ExpenditureChartView({
         collection: this.expenses,
         groupBy: groupBy || this.controls.grouping.active(),
         category: 'account'
@@ -41,20 +41,5 @@ Ledger.module('Spending', function (Spending, App, Backbone, Marionette, $, _) {
 		}
 	});
 	
-  // Spending Initializer
-  // -----------
-  Spending.addInitializer(function(){
-		var controller = new Spending.Controller(),
-		    router = new Spending.Router({ controller: controller	});
-
-		controller.router = router;
-
-		// Start the controller on first route to this module
-		this.listenToOnce(router, 'route', function() {
-		  controller.start();
-		});
-
-    // Update groupBy param in URL when changed
-    new ControlNavigation(this, App.vent, router, 'spending');
-  });
+	return Controller;
 });

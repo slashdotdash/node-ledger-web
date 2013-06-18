@@ -1,10 +1,12 @@
-/*global Ledger */
-Ledger.module('Dashboard', function (Dashboard, App, Backbone) {
+/*global define */
+
+define(['singleActiveItem', 'backbone', 'marionette', 'jquery', 'underscore'], 
+  function(singleActiveItem, Backbone, Marionette, $, _) {
   'use strict';
-  
+
 	// Section Model
 	// ----------
-	Dashboard.Section = Backbone.Model.extend({
+	var Section = Backbone.Model.extend({
 		defaults: {
       title: '',
       url: '',
@@ -15,14 +17,14 @@ Ledger.module('Dashboard', function (Dashboard, App, Backbone) {
 		  this.set('active', true);
 		}
 	});
-
+	
 	// Sections Collection
 	// ---------------
-	Dashboard.Sections = Backbone.Collection.extend({
-		model: Dashboard.Section,
+	var Sections = Backbone.Collection.extend({
+		model: Section,
 		
 		initialize: function() {
-		  singleActiveItemBehaviour(this);
+		  singleActiveItem(this);
 		},
 		
 		activate: function(name) {
@@ -31,4 +33,9 @@ Ledger.module('Dashboard', function (Dashboard, App, Backbone) {
 		  }
 		}
 	});
+
+	return {
+    Section: Section,
+    Sections: Sections
+	};
 });

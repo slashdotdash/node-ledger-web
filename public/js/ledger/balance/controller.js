@@ -1,24 +1,24 @@
-/*global Ledger */
-Ledger.module('Balance', function (Balance, App, Backbone, Marionette, $, _) {
+/*global define */
+
+define([
+    'ledger', 
+    'balance/model', 
+    'balance/views',
+    'controls/model',
+    'controls/views',
+    'filteredCollection',
+    'backbone', 'marionette', 'vent', 'jquery', 'underscore'], 
+  function(Ledger, Models, Views, Controls, ControlViews, FilteredCollection, Backbone, Marionette, vent, $, _) {
   'use strict';
   
-	// Balance Router
-	// ---------------
-	Balance.Router = Marionette.AppRouter.extend({
-		appRoutes: {
-		  'balance': 'showBalance',
-		  'balance/*account': 'filterByAccount'
-		}		
-	});
-
 	// Balance Controller
 	// ------------------------------
-	Balance.Controller = function () {
-		this.balance = new Balance.ModelList();
+	var Controller = function () {
+		this.balance = new Models.Balances();
     this.filteredBalance = FilteredCollection(this.balance);
 	};
 
-	_.extend(Balance.Controller.prototype, {
+	_.extend(Controller.prototype, {
 		start: _.once(function () {
       this.balance.fetch({reset: true});
 		}),
@@ -37,38 +37,22 @@ Ledger.module('Balance', function (Balance, App, Backbone, Marionette, $, _) {
 		  this.showBalanceChartView();
 		  
 		  var name = (account || '').split('/').join(':');
-		  App.vent.trigger('balance:filter', {name: name});
+		  vent.trigger('balance:filter', {name: name});
 		},
 		
 		showBalanceChartView: function() {
-      App.main.show(new Balance.Views.ChartView({
+      Ledger.main.show(new Views.ChartView({
         collection: this.filteredBalance
       }));		  
 		}
 	});
 
-  App.vent.on('balance:filter', function(filter) {
+  vent.on('balance:filter', function(filter) {
     var name = filter.name,
         url = name.split(':').join('/');
 
     Backbone.history.navigate('balance/' + url, {trigger: false});
   });
-  
-	// Balance Initializer
-	// --------------------
-	Balance.addInitializer(function() {
-		var controller = new Balance.Controller(),
-		    router = new Balance.Router({	controller: controller });
 
-		controller.router = router;
-		
-		// Start the controller on first route to this module
-		this.listenToOnce(router, 'route', function() {
-		  controller.start();
-		});
-		
-		this.listenTo(router, 'route', function(page) {
-      App.vent.trigger('section:activated', {name: 'balance'});
-    });
-	});
+  return Controller;
 });

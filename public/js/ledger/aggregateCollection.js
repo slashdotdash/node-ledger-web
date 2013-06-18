@@ -1,35 +1,39 @@
 // Collection Decorator For Aggregating many collections
 // ----------------------------------
 
-function AggregateCollection(aggregateCollection, sourceCollections) {
-    var aggregated = new aggregateCollection();
+define(function() {
+  function AggregateCollection(aggregateCollection, sourceCollections) {
+      var aggregated = new aggregateCollection();
     
-    // allow this object to have it's own events
-    aggregated._callbacks = {};
+      // allow this object to have it's own events
+      aggregated._callbacks = {};
 
-    _.each(sourceCollections, function(collection) {
-      aggregated.listenTo(collection, 'reset', function() {
-        var models = _.flatten(_.map(sourceCollections, function(c) {
-          return c.models; 
-        }));
-        aggregated.reset(models);
-      });
+      _.each(sourceCollections, function(collection) {
+        aggregated.listenTo(collection, 'reset', function() {
+          var models = _.flatten(_.map(sourceCollections, function(c) {
+            return c.models; 
+          }));
+          aggregated.reset(models);
+        });
 
-      // Add matching models to aggregated collection
-      aggregated.listenTo(collection, 'add', function(model) {
-        aggregated.add(model);
-      });
+        // Add matching models to aggregated collection
+        aggregated.listenTo(collection, 'add', function(model) {
+          aggregated.add(model);
+        });
 
-      // Remove matching models from aggregated collection
-      aggregated.listenTo(collection, 'remove', function(model) {
-        aggregated.remove(model);
-      });
+        // Remove matching models from aggregated collection
+        aggregated.listenTo(collection, 'remove', function(model) {
+          aggregated.remove(model);
+        });
 
-      // Unsubscribe from all events when underlying collection is destroyed
-      aggregated.listenToOnce(collection, 'destroy', function() {
-        aggregated.stopListening(collection);
+        // Unsubscribe from all events when underlying collection is destroyed
+        aggregated.listenToOnce(collection, 'destroy', function() {
+          aggregated.stopListening(collection);
+        });
       });
-    });
     
-    return aggregated;
-}
+      return aggregated;
+  }
+  
+  return AggregateCollection;
+});

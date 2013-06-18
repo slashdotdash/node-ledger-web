@@ -1,4 +1,4 @@
-var DateRange = (function() {
+define(function() {
   var DateRange = function(from, to) {
     this.from = from;
     this.to = to;
@@ -64,4 +64,4 @@ var DateRange = (function() {
   }
 
   return DateRange;
-})();
+});

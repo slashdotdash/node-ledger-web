@@ -1,10 +1,12 @@
-/*global Ledger */
-Ledger.module('Spending', function (Spending, App, Backbone, Marionette, $, _) {
+/*global define */
+
+define(['groupByDate', 'dateRange', 'backbone', 'marionette', 'jquery', 'underscore'], 
+  function(groupByDate, DateRange, Backbone, Marionette, $, _) {
   'use strict';
   
 	// Expenses Model
 	// ----------
-	Spending.Entry = Backbone.Model.extend({
+	var Entry = Backbone.Model.extend({
 		defaults: {
 		  date: null,
 		  payee: '',
@@ -40,8 +42,8 @@ Ledger.module('Spending', function (Spending, App, Backbone, Marionette, $, _) {
 
 	// Expenses Collection
 	// ---------------
-	Spending.Expenses = Backbone.Collection.extend({
-		model: Spending.Entry,
+	var Expenses = Backbone.Collection.extend({
+		model: Entry,
 		url: '/api/register/Expenses',
 		
 		getDateRange: function() {
@@ -65,4 +67,9 @@ Ledger.module('Spending', function (Spending, App, Backbone, Marionette, $, _) {
       });
     }
 	});
+	
+	return {
+	  Entry: Entry,
+	  Expenses: Expenses
+	};
 });

@@ -1,20 +1,18 @@
-/*global Backbone, _ */
-'use strict';
+/*global define */
 
-var Ledger = new Backbone.Marionette.Application();
+define(['backbone', 'marionette', 'underscore'], function(Backbone, Marionette, _) {
+  'use strict';
 
-Ledger.addRegions({
-	nav: '#nav',
-	main: '#main'
-});
+  var Ledger = new Marionette.Application();
 
-Ledger.on('initialize:before', function() {
-  _.templateSettings = {
-    evaluate : /\{\[([\s\S]+?)\]\}/g,
-    interpolate : /\{\{([\s\S]+?)\}\}/g
-  };
-});
+  Ledger.addRegions({
+  	nav: '#nav',
+  	main: '#main'
+  });
 
-Ledger.on('initialize:after', function() {
-	Backbone.history.start({pushState: true});
+  Ledger.on('initialize:after', function() {
+  	Backbone.history.start({pushState: true});
+  });
+  
+  return Ledger;
 });

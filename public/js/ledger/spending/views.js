@@ -1,15 +1,20 @@
-/*global Ledger */
-'use strict';
+/*global define */
 
-Ledger.module('Spending.Views', function (Views, App, Backbone, Marionette, $, _) {
+define([
+    'tpl!charting/template-chart-container.html', 
+    'nvd3',
+    'backbone', 'marionette', 'vent', 'jquery', 'underscore'], 
+  function(ChartTemplate, nv, Backbone, Marionette, vent, $, _) {
+  'use strict';
+
   // Expenditure Chart View
   // -----------
-  Views.ExpenditureChartView = Backbone.Marionette.ItemView.extend({
-    template: '#template-spending-chart-view',
+  var ExpenditureChartView = Backbone.Marionette.ItemView.extend({
+    template: ChartTemplate,
 		
     initialize: function() {
       this.listenTo(this.collection, 'all', this.buildChart, this);
-      this.listenTo(App.vent, 'controls:groupby', this.groupBy.bind(this));
+      this.listenTo(vent, 'controls:groupby', this.groupBy.bind(this));
     },
     
     onRender: function() {
@@ -111,4 +116,8 @@ Ledger.module('Spending.Views', function (Views, App, Backbone, Marionette, $, _
       return total;
 		}
   });
+  
+  return {
+    ExpenditureChartView: ExpenditureChartView
+  };
 });

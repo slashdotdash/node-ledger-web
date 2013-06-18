@@ -8,3 +8,5 @@ ln -s components/backbone.marionette/lib/backbone.marionette.js public/js/vendor
 ln -s components/nvd3/lib/d3.v2.js public/js/vendor/d3.v2.js
 ln -s components/nvd3/lib/fisheye.js public/js/vendor/fisheye.js
 ln -s components/nvd3/nv.d3.js public/js/vendor/nv.d3.js
+ln -s components/requirejs/requirejs.js public/js/vendor/requirejs.js
+ln -s components/requirejs-tpl/text.js public/js/vendor/tpl.js

@@ -1,10 +1,12 @@
-/*global Ledger */
-Ledger.module('Balance', function (Balance, App, Backbone) {
+/*global define */
+
+define(['groupByDate', 'dateRange', 'backbone', 'marionette', 'jquery', 'underscore'], 
+  function(groupByDate, DateRange, Backbone, Marionette, $, _) {
   'use strict';
   
 	// Balance Model
 	// ----------
-	Balance.Model = Backbone.Model.extend({
+	var Balance = Backbone.Model.extend({
 		defaults: {
 		  total: {
         currency: '',
@@ -46,8 +48,13 @@ Ledger.module('Balance', function (Balance, App, Backbone) {
 
 	// Balance Collection
 	// ---------------
-	Balance.ModelList = Backbone.Collection.extend({
-		model: Balance.Model,
+	var Balances = Backbone.Collection.extend({
+		model: Balance,
 		url: '/api/balance'
 	});
+	
+	return {
+	  Balance: Balance,
+	  Balances: Balances
+	}
 });

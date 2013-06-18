@@ -3,88 +3,6 @@
 <div id="main">
 </div>
 
-<!-- Dashboard -->
-<script type="text/html" id="template-dashboard-view">
-  <div class="jumbotron">
-    <h1>Ledger Web</h1>
-    <p class="lead">Your financial dashboard.</p>
-    
-    <hr />
-    <div class="row-fluid">
-      <div class="span3">
-        <h2>Income</h2>
-        <p>Compared to expenditure</p>
-        <p>Over time</p>
-        <p>By Category</p>        
-      </div>
-      
-      <div class="span3">
-        <h2>Spending</h2>
-        <p>Over time</p>
-        <p>By Category</p>
-      </div>
-      
-      <div class="span3">
-        <h2>Net Worth</h2>
-      </div>
-      
-      <div class="span3">
-        <h2>Balance</h2>
-        <p>By account</p>
-      </div>
-    </div>
-  </div>
-</script>
-
-<script type="text/html" id="template-dashboard-nav-view">
-  <a class="brand" href="/">Ledger</a>
-  <ul class="nav"> </ul>
-</script>
-
-<script type="text/html" id="template-dashboard-nav-item-view">
-  <a href="{{url}}">{{title}}</a>
-</script>
-
-<!-- Charting layout -->
-<script type="text/html" id="template-charting-layout">
-  <section>
-    <navigation id="controls" class="span2"> </navigation>
-    <article id="chart" class="span10"> </article>
-  </section>
-</script>
-
-<!-- Charting controls -->
-<script type="text/html" id="template-controls-grouping-control">
-  <ul id="groupby" class="nav nav-list">
-    <li class="nav-header">Group by</li>
-  </ul>
-</script>
-
-<script type="text/html" id="template-controls-grouping-item">
-  <a href="#">{{name}}</a>
-</script>
-
-<!-- Income -->
-<script type="text/html" id="template-income-chart-view">
-  <div id="chart">
-    <svg style="height: 700px; width: 1000px"> </svg>
-  </div>
-</script>
-
-<!-- Spending -->
-<script type="text/html" id="template-spending-chart-view">
-  <div id="chart">
-    <svg style="height: 700px; width: 970px"> </svg>
-  </div>
-</script>
-
-<!-- Net Worth -->
-<script type="text/html" id="template-net-worth-chart-view">
-  <div id="chart">
-    <svg style="height: 700px; width: 1000px"> </svg>
-  </div>
-</script>
-
 <!-- Balance -->
 <script type="text/html" id="template-balance-list-view">
   <h2>Balance</h2>
@@ -99,23 +17,6 @@
 	</table>
 </script>
 
-<script type="text/html" id="template-balance-chart-view">
-  <div class="span2">
-    <ul id="filter" class="nav nav-list">
-      <li class="nav-header">Filter by category</li>
-    </ul>
-  </div>
-  <div class="span10">
-    <div id="chart">
-      <svg style="height: 700px; width: 970px"> </svg>
-    </div>      
-  </div>
-</script>
-
-<script type="text/html" id="template-balance-chart-filter-item-view">
-  <a href="#">{{account.shortname}}</a>
-</script>
-
 <script type="text/html" id="template-balance-item-view">
   <td class="balance-amount">{{total.formatted}}</td>
   <td>{{account.fullname}}</td>
@@ -123,5 +24,3 @@
 
 <script type="text/html" id="template-null-item-view">
 </script>
-
-<% block('script', "$(function() { Ledger.start(); });") -%>

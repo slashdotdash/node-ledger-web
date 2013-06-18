@@ -1,10 +1,12 @@
-/*global Ledger */
-Ledger.module('Worth', function (Worth, App, Backbone, Marionette, $, _) {
+/*global define */
+
+define(['groupByDate', 'dateRange', 'backbone', 'marionette', 'jquery', 'underscore'], 
+  function(groupByDate, DateRange, Backbone, Marionette, $, _) {
   'use strict';
   
 	// Assets + Liabilities Entry Model
 	// ----------
-	Worth.Entry = Backbone.Model.extend({
+	var Entry = Backbone.Model.extend({
 		defaults: {
 		  date: null,
 		  payee: '',
@@ -40,22 +42,22 @@ Ledger.module('Worth', function (Worth, App, Backbone, Marionette, $, _) {
 
 	// Assets Collection
 	// ---------------
-	Worth.Assets = Backbone.Collection.extend({
-		model: Worth.Entry,
+	var Assets = Backbone.Collection.extend({
+		model: Entry,
 		url: '/api/register/Assets'
 	});
 	
 	// Liabilities Collection
 	// ---------------
-	Worth.Liabilities = Backbone.Collection.extend({
-		model: Worth.Entry,
+	var Liabilities = Backbone.Collection.extend({
+		model: Entry,
 		url: '/api/register/Liabilities'
 	});
 
 	// Aggregated Assets + Liabilities Collection
 	// ---------------	
-	Worth.Aggregated = Backbone.Collection.extend({
-    model: Worth.Entry,
+	var Aggregated = Backbone.Collection.extend({
+    model: Entry,
         
     getDateRange: function() {
       var from = _.min(this.map(function(entry) { return entry.getDate(); })),
@@ -64,4 +66,11 @@ Ledger.module('Worth', function (Worth, App, Backbone, Marionette, $, _) {
       return new DateRange(from, to);
     }
   });
+  
+  return {
+    Entry: Entry,
+    Assets: Assets,
+    Liabilities: Liabilities,
+    Aggregated: Aggregated
+  };
 });
