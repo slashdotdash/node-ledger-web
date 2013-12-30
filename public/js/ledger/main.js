@@ -6,8 +6,7 @@ require.config({
     jquery : '../vendor/jquery',
     marionette : '../vendor/backbone.marionette',
     d3 : '../vendor/d3.v2',
-    fisheye: '../vendor/fisheye',
-    nvd3: '../vendor/nv.d3'    
+    nvd3: '../vendor/nv.d3'
   },
   shim : {
     jquery : {
@@ -27,11 +26,8 @@ require.config({
     d3 : {
       exports: 'd3'
     },
-    fisheye: {
-      deps : [ 'd3' ]
-    },
     nvd3 : {
-      deps : ['d3', 'fisheye'],
+      deps : ['d3'],
       exports: 'nv'
     }
   }
@@ -39,12 +35,13 @@ require.config({
 
 require([
   'ledger',
-  'dashboard/module', 
+  'dashboard/module',
   'income/module',
   'spending/module',
   'worth/module',
   'balance/module'
 ], function(Ledger) {
   'use strict';
-    Ledger.start();
+  
+  Ledger.start();
 });
