@@ -23,7 +23,7 @@ define(['groupByDate', 'dateRange', 'backbone', 'marionette', 'jquery', 'undersc
 
 		totalByAccount: function(account) {
       return _.reduce(this.get('postings'), function(memo, posting) {
-		    return (posting.account.indexOf(account) === 0) ? memo + Math.max(posting.commodity.amount, 0) : memo;
+		    return (posting.account.indexOf(account) === 0) ? memo + posting.commodity.amount : memo;
 		  }, 0);
 		},
 		

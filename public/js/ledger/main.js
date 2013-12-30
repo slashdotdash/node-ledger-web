@@ -37,16 +37,14 @@ require.config({
   }
 });
 
-require(['ledger'], function(Ledger) {
+require([
+  'ledger',
+  'dashboard/module', 
+  'income/module',
+  'spending/module',
+  'worth/module',
+  'balance/module'
+], function(Ledger) {
   'use strict';
-  
-  require([
-    'dashboard/module', 
-    'income/module',
-    'spending/module',
-    'worth/module',
-    'balance/module'
-    ], function(Dashboard, Income, Spending, Worth, Balance) {
     Ledger.start();
-  });
 });

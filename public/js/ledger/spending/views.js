@@ -39,6 +39,7 @@ define([
       nv.addGraph(function() {
         var chart = nv.models.multiBarChart()
           .stacked(true)
+          .showLegend(true)
           .x(function(d) { return d.date })
           .y(function(d) { return d.total });
 
@@ -76,10 +77,10 @@ define([
         var data = [],
             accounts = this.collection.getAccounts();
 
-        _.each(accounts, function(account) { 
+        _.each(accounts, function(account) {
           data.push({
             key: account.toString().substr(9),
-            values: this.totalByDate(dateRange, this.collection.getByAccount(account))
+            values: this.totalByDate(dateRange, account, this.collection.getByAccount(account))
           });
         }, this);
 
@@ -95,25 +96,25 @@ define([
     },
     
     // Total amount for each date in the given range
-    totalByDate: function(dateRange, entries) {
+    totalByDate: function(dateRange, account, entries) {
       return _.map(dateRange, function(date) {
         return {
           date: date,
-          total: this.totalByDateAndAccount(entries, date)
+          total: this.totalByDateAndAccount(entries, date, account)
         };
       }, this);
     },
     
-    totalByDateAndAccount: function(entries, date) {
+    totalByDateAndAccount: function(entries, date, account) {
       var total = 0;
 
       _.each(entries, function(entry) {
         if (entry.groupBy(this.options.groupBy) === date.getTime()) {
-          total += entry.totalAmount()
+          total += entry.totalByAccount(account);
         }
       }, this);
 
-      return total;
+      return Math.max(total, 0);
 		}
   });
   
