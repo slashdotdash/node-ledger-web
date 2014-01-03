@@ -32,6 +32,10 @@ Bower is used for JavaScript and CSS assets, once installed `npm install -g bowe
 
     bower install
     
+Grunt is used for building the front-end assets, you need to run the default Grunt task, once installed `npm install -g grunt-cli`.
+	
+	grunt
+
 Finally, run the express application and open [http://localhost:3000/](http://localhost:3000/) in a web browser. 
 
     node app

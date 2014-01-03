@@ -56,6 +56,7 @@ module.exports = function(grunt) {
           { src: 'bower_components/d3/d3.js', dest: 'public/js/vendor/d3.js' },
           { src: 'bower_components/jquery/jquery.js', dest: 'public/js/vendor/jquery.js' },
           { src: 'bower_components/nvd3/nv.d3.js', dest: 'public/js/vendor/nv.d3.js' },
+          { src: 'bower_components/nvd3/nv.d3.css', dest: 'public/css/vendor/nv.d3.css' },
           { src: 'bower_components/react/react.js', dest: 'public/js/vendor/react.js' },
           { src: 'bower_components/requirejs/require.js', dest: 'public/js/vendor/require.js' },
           { src: 'bower_components/requirejs-tpl/tpl.js', dest: 'public/js/vendor/tpl.js' },
@@ -81,9 +82,8 @@ module.exports = function(grunt) {
     recess: {
       dist: {
         src: [
-          'components/bootstrap/less/bootstrap.less',
-          'components/bootstrap/less/responsive.less',
-          'components/nvd3/src/nv.d3.css',
+          'bower_components/bootstrap/less/bootstrap.less',
+          'bower_components/bootstrap/less/responsive.less',
           'public/css/less/app.less'
         ],
         dest: 'public/css/main.css',
@@ -119,5 +119,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-recess');
 
   // Default task.
-  grunt.registerTask('default', ['recess', 'concat']);
+  grunt.registerTask('default', ['copy', 'recess']);
 };
