@@ -1,14 +1,13 @@
-/*global define */
-
 define([
-    'ledger', 
-    'income/model', 
-    'income/views',
-    'controls/model',
-    'controls/views',
-    'aggregateCollection',
-    'backbone', 'marionette', 'vent', 'jquery', 'underscore'], 
-  function(Ledger, Models, Views, Controls, ControlViews, AggregateCollection, Backbone, Marionette, vent, $, _) {
+  './model',
+  './income-vs-expenditure-chart',
+  'controls/model',
+  'controls/charting',
+  'aggregateCollection',
+  'vent',
+  'underscore',
+  'react'
+], function(Models, IncomeVsExpenditureChart, Controls, Charting, AggregateCollection, vent, _, React) {
   'use strict';
 
   var Controller = function () {
@@ -16,34 +15,38 @@ define([
       grouping: Controls.defaults
     };
     
-	  this.income = new Models.Income();
-	  this.expenses = new Models.Expenses();
+    this.income = new Models.Income();
+    this.expenses = new Models.Expenses();
+    this.aggregated = new AggregateCollection(Models.Aggregated, [this.income, this.expenses]);
+  };
 
-    this.aggregated = AggregateCollection(Models.Aggregated, [this.income, this.expenses]);
-	};
+  _.extend(Controller.prototype, {
+    start: _.once(function() {
+      this.income.fetch({reset: true});
+      this.expenses.fetch({reset: true});
+    }),
+    
+    showIncome: function(groupBy) {
+      groupBy = groupBy || this.controls.grouping.active();
 
-	_.extend(Controller.prototype, {
-	  start: _.once(function() {
-	    this.income.fetch({reset: true});
-		  this.expenses.fetch({reset: true});
-	  }),
-	  
-		showIncome: function(groupBy) {
-		  this.controls.grouping.activate(groupBy);
-		  
-		  var layout = new ControlViews.Layout();
-      Ledger.main.show(layout);
-      
-      layout.controls.show(new ControlViews.GroupingControlView({
-        collection: this.controls.grouping
-      }));
-      
-      layout.chart.show(new Views.IncomeVsExpenditureChartView({
-        collection: this.aggregated,
-        groupBy: groupBy || this.controls.grouping.active()
-      }));
-		}
-	});
-	
-	return Controller;
+      this.controls.grouping.activate(groupBy);
+
+      var chart = new IncomeVsExpenditureChart({ model: this.aggregated, groupBy: groupBy });
+
+      var onGroupBy = function(groupBy) {
+        var name = groupBy.get('name');
+
+        chart.setProps({ groupBy: name });
+
+        vent.trigger('controls:groupby', { name: name });
+      };
+
+      React.renderComponent(
+        new Charting({ grouping: this.controls.grouping, onGroupBy: onGroupBy }, chart),
+        document.getElementById('main')
+      );
+    }
+  });
+  
+  return Controller;
 });

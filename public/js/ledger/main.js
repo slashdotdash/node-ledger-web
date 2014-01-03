@@ -1,34 +1,35 @@
 require.config({
   paths : {
-    tpl: '../vendor/tpl',
     backbone : '../vendor/backbone',
-    underscore : '../vendor/underscore',
+    d3 : '../vendor/d3',
     jquery : '../vendor/jquery',
     marionette : '../vendor/backbone.marionette',
-    d3 : '../vendor/d3.v2',
-    nvd3: '../vendor/nv.d3'
+    nvd3: '../vendor/nv.d3',
+    react: '../vendor/react',
+    tpl: '../vendor/tpl',
+    underscore : '../vendor/underscore'
   },
   shim : {
-    jquery : {
-      exports : 'jQuery'
-    },
-    underscore : {
-      exports : '_'
-    },
     backbone : {
       deps : ['jquery', 'underscore'],
       exports : 'Backbone'
+    },
+    d3 : {
+      exports: 'd3'
+    },
+    jquery : {
+      exports : 'jquery'
     },
     marionette : {
       deps : ['jquery', 'underscore', 'backbone'],
       exports : 'Marionette'
     },
-    d3 : {
-      exports: 'd3'
-    },
     nvd3 : {
       deps : ['d3'],
       exports: 'nv'
+    },
+    underscore : {
+      exports : '_'
     }
   }
 });

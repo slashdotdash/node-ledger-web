@@ -1,13 +1,14 @@
-/*global define */
-
 define([
-    'ledger', 
-    'spending/model', 
-    'spending/views',
-    'controls/model',
-    'controls/views',
-    'backbone', 'marionette', 'vent', 'jquery', 'underscore'], 
-  function(Ledger, Models, Views, Controls, ControlViews, Backbone, Marionette, vent, $, _) {
+  './model',
+  './expenditure-chart',
+  'controls/model',
+  'controls/charting',
+  'backbone',
+  'marionette',
+  'vent',
+  'underscore',
+  'react'
+], function(Models, ExpenditureChart, Controls, Charting, Backbone, Marionette, vent, _, React) {
   'use strict';
   
   var Controller = function () {
@@ -15,31 +16,35 @@ define([
       grouping: Controls.defaults
     };
     
-	  this.expenses = new Models.Expenses();
-	};
+    this.expenses = new Models.Expenses();
+  };
 
-	_.extend(Controller.prototype, {
-	  start: _.once(function() {
-		  this.expenses.fetch({reset: true});
-	  }),
-	  
-		showSpending: function (groupBy) {
-		  this.controls.grouping.activate(groupBy);
-		  
-		  var layout = new ControlViews.Layout();
-      Ledger.main.show(layout);
-      
-      layout.controls.show(new ControlViews.GroupingControlView({
-        collection: this.controls.grouping
-      }));
+  _.extend(Controller.prototype, {
+    start: _.once(function() {
+      this.expenses.fetch({reset: true});
+    }),
+    
+    showSpending: function (groupBy) {
+      groupBy = groupBy || this.controls.grouping.active();
 
-      layout.chart.show(new Views.ExpenditureChartView({
-        collection: this.expenses,
-        groupBy: groupBy || this.controls.grouping.active(),
-        category: 'account'
-      }));
-		}
-	});
-	
-	return Controller;
+      this.controls.grouping.activate(groupBy);
+
+      var chart = new ExpenditureChart({ model: this.expenses, groupBy: groupBy, category: 'account' });
+
+      var onGroupBy = function(groupBy) {
+        var name = groupBy.get('name');
+
+        chart.setProps({ groupBy: name });
+
+        vent.trigger('controls:groupby', { name: name });
+      };
+
+      React.renderComponent(
+        new Charting({ grouping: this.controls.grouping, onGroupBy: onGroupBy }, chart),
+        document.getElementById('main')
+      );
+    }
+  });
+  
+  return Controller;
 });

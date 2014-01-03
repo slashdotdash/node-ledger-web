@@ -1,62 +1,64 @@
-/*global define */
-
-define(['groupByDate', 'dateRange', 'backbone', 'marionette', 'jquery', 'underscore'], 
-  function(groupByDate, DateRange, Backbone, Marionette, $, _) {
+define([
+  'groupByDate',
+  'dateRange',
+  'backbone',
+  'underscore'
+], function(groupByDate, DateRange, Backbone, _) {
   'use strict';
   
-	// Assets + Liabilities Entry Model
-	// ----------
-	var Entry = Backbone.Model.extend({
-		defaults: {
-		  date: null,
-		  payee: '',
-			postings: []
-		},
+  // Assets + Liabilities Entry Model
+  // ----------
+  var Entry = Backbone.Model.extend({
+    defaults: {
+      date: null,
+      payee: '',
+      postings: []
+    },
 
-		initialize: function () {
-		  _.extend(this, groupByDate(new Date(this.get('date'))));
-		},
-		
-		isAsset: function() {
-		  return _.any(this.get('postings'), function(posting) {
-		    return posting.account.indexOf('Assets:') === 0;
-		  });
-		},
-		
-		isLiability: function() {
-		  return _.any(this.get('postings'), function(posting) {
-		    return posting.account.indexOf('Liabilities:') === 0;
-		  });
-		},
-		
-		totalByAccount: function(account) {
+    initialize: function () {
+      _.extend(this, groupByDate(new Date(this.get('date'))));
+    },
+    
+    isAsset: function() {
+      return _.any(this.get('postings'), function(posting) {
+        return posting.account.indexOf('Assets:') === 0;
+      });
+    },
+    
+    isLiability: function() {
+      return _.any(this.get('postings'), function(posting) {
+        return posting.account.indexOf('Liabilities:') === 0;
+      });
+    },
+    
+    totalByAccount: function(account) {
       return _.reduce(this.get('postings'), function(memo, posting) {
-		    return (account.length === 0 || posting.account.indexOf(account + ':') === 0) ? memo + posting.commodity.amount : memo;
-		  }, 0);
-		},
-		
-		totalAmount: function() {
-		  return this.totalByAccount('');
-		}
-	});
+        return (account.length === 0 || posting.account.indexOf(account + ':') === 0) ? memo + posting.commodity.amount : memo;
+      }, 0);
+    },
+    
+    totalAmount: function() {
+      return this.totalByAccount('');
+    }
+  });
 
-	// Assets Collection
-	// ---------------
-	var Assets = Backbone.Collection.extend({
-		model: Entry,
-		url: '/api/register/Assets'
-	});
-	
-	// Liabilities Collection
-	// ---------------
-	var Liabilities = Backbone.Collection.extend({
-		model: Entry,
-		url: '/api/register/Liabilities'
-	});
+  // Assets Collection
+  // ---------------
+  var Assets = Backbone.Collection.extend({
+    model: Entry,
+    url: '/api/register/Assets'
+  });
+  
+  // Liabilities Collection
+  // ---------------
+  var Liabilities = Backbone.Collection.extend({
+    model: Entry,
+    url: '/api/register/Liabilities'
+  });
 
-	// Aggregated Assets + Liabilities Collection
-	// ---------------	
-	var Aggregated = Backbone.Collection.extend({
+  // Aggregated Assets + Liabilities Collection
+  // ---------------  
+  var Aggregated = Backbone.Collection.extend({
     model: Entry,
         
     getDateRange: function() {

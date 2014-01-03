@@ -13,12 +13,12 @@ define(function() {
     }
     
     throw 'Date range granularity "' + granularity + '" is not supported';
-  }
+  };
 
   // Returns an array of years between from and to.
   DateRange.prototype.yearsBetween = function() {
     var current = this.from.getFullYear(),
-        toYear = this.to.getFullYear();
+        toYear = this.to.getFullYear(),
         range = [];
 
     while (current <= toYear) {
@@ -46,7 +46,7 @@ define(function() {
     }
     
     return range;
-  }
+  };
 
   // Returns an array of days between from and to.
   DateRange.prototype.daysBetween = function() {
@@ -61,7 +61,7 @@ define(function() {
     }
     
     return range;
-  }
+  };
 
   return DateRange;
 });

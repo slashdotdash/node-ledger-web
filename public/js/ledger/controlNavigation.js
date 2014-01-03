@@ -11,8 +11,8 @@ define(function() {
   ControlNavigation.prototype.initialize = function(module) {
     var self = this;
     
-    module.listenTo(this.router, 'route', function(page) {
-      self.vent.trigger('section:activated', {name: self.section});
+    module.listenTo(this.router, 'route', function() {
+      self.vent.trigger('section:activated', { name: self.section });
     });
 
     module.listenTo(this.vent, 'section:activated', function(params) {
@@ -27,5 +27,5 @@ define(function() {
     });
   };
   
-  return ControlNavigation;  
+  return ControlNavigation;
 });

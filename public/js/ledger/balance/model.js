@@ -1,33 +1,39 @@
-/*global define */
-
-define(['groupByDate', 'dateRange', 'backbone', 'marionette', 'jquery', 'underscore'], 
-  function(groupByDate, DateRange, Backbone, Marionette, $, _) {
+define([
+  'groupByDate',
+  'dateRange',
+  'backbone'
+], function(groupByDate, DateRange, Backbone) {
   'use strict';
   
-	// Balance Model
-	// ----------
-	var Balance = Backbone.Model.extend({
-		defaults: {
-		  total: {
+  var Account = Backbone.Model.extend({
+    defaults: {
+      fullname: '',
+      shortname: ''
+    }
+  });
+
+  var Balance = Backbone.Model.extend({
+    defaults: {
+      total: {
         currency: '',
         amount: 0,
         formatted: ''
       },
-			account: {
-        fullname: '',
-        shortname: ''
-			}
-		},
-
-		initialize: function () {
-		},
-
-    fullname: function() {
-      return this.get('account').fullname;
+      account: new Account()
     },
 
-		filterByDepth: function(depth) {
-      return this.get('account').depth === depth;
+    parse: function(response, options) {
+      var attrs = Backbone.Model.prototype.parse(response, options);
+      attrs.account = new Account(response.account, options);
+      return attrs;
+    },
+
+    fullname: function() {
+      return this.get('account').get('fullname');
+    },
+
+    filterByDepth: function(depth) {
+      return this.get('account').get('depth') === depth;
     },
     
     filterByParentName: function(name) {
@@ -35,7 +41,7 @@ define(['groupByDate', 'dateRange', 'backbone', 'marionette', 'jquery', 'undersc
     },
     
     filterByParentNameAndDepth: function(name) {
-      if (name.length == 0) {
+      if (name.length === 0) {
         return this.filterByDepth(1);
       }
 
@@ -43,18 +49,16 @@ define(['groupByDate', 'dateRange', 'backbone', 'marionette', 'jquery', 'undersc
       
       return this.filterByDepth(depth) && this.filterByParentName(name);
     }
-    
-	});
+  });
 
-	// Balance Collection
-	// ---------------
-	var Balances = Backbone.Collection.extend({
-		model: Balance,
-		url: '/api/balance'
-	});
-	
-	return {
-	  Balance: Balance,
-	  Balances: Balances
-	}
+  var Balances = Backbone.Collection.extend({
+    model: Balance,
+    url: '/api/balance'
+  });
+  
+  return {
+    Account: Account,
+    Balance: Balance,
+    Balances: Balances
+  };
 });

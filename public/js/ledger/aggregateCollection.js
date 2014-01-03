@@ -1,7 +1,7 @@
 // Collection Decorator For Aggregating many collections
 // ----------------------------------
 
-define(function() {
+define(['underscore'], function(_) {
   function AggregateCollection(aggregateCollection, sourceCollections) {
       var aggregated = new aggregateCollection();
     
@@ -11,7 +11,7 @@ define(function() {
       _.each(sourceCollections, function(collection) {
         aggregated.listenTo(collection, 'reset', function() {
           var models = _.flatten(_.map(sourceCollections, function(c) {
-            return c.models; 
+            return c.models;
           }));
           aggregated.reset(models);
         });
@@ -33,7 +33,7 @@ define(function() {
       });
     
       return aggregated;
-  }
+    }
   
   return AggregateCollection;
 });

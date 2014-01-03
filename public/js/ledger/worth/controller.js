@@ -1,52 +1,64 @@
-/*global define */
-
 define([
-    'ledger', 
-    'worth/model', 
-    'worth/views',
-    'controls/model',
-    'controls/views',
-    'aggregateCollection',
-    'backbone', 'marionette', 'vent', 'jquery', 'underscore'], 
-  function(Ledger, Models, Views, Controls, ControlViews, AggregateCollection, Backbone, Marionette, vent, $, _) {
+  './model',
+  './net-worth-chart',
+  'controls/model',
+  'controls/charting',
+  'aggregateCollection',
+  'vent',
+  'jquery',
+  'underscore',
+  'react'
+], function(Models, NetWorthChart, Controls, Charting, AggregateCollection, vent, $, _, React) {
   'use strict';
   
-	// Worth Controller
-	// ------------------------------
-	var Controller = function () {
-	  this.controls = {
+  var Controller = function () {
+    this.controls = {
       grouping: Controls.defaults
     };
     
-	  this.assets = new Models.Assets();
-	  this.liabilities = new Models.Liabilities();
+    this.assets = new Models.Assets();
+    this.liabilities = new Models.Liabilities();
 
     // Net worth is the combined total of Assets and Liabilities.
-    this.netWorth = AggregateCollection(Models.Aggregated, [this.assets, this.liabilities]);
-	};
+    this.netWorth = new AggregateCollection(Models.Aggregated, [this.assets, this.liabilities]);
+  };
 
-	_.extend(Controller.prototype, {
-		start: _.once(function () {
-      this.assets.fetch({reset: true});
-      this.liabilities.fetch({reset: true});
-		}),
+  _.extend(Controller.prototype, {
+    start: _.once(function () {
+      var self = this;
 
-		showNetWorth: function(groupBy) {
-		  this.controls.grouping.activate(groupBy);
-		  
-		  var layout = new ControlViews.Layout();
-      Ledger.main.show(layout);
-      
-      layout.controls.show(new ControlViews.GroupingControlView({
-        collection: this.controls.grouping
-      }));
+      $.when(
+        this.assets.fetch({reset: true}),
+        this.liabilities.fetch({reset: true})
+      ).done(function() {
+        // show net worth chart after both assets and liabilities have been fetched
+        self.showNetWorth();
+      });
+    }),
 
-      layout.chart.show(new Views.NetWorthChartView({
-        collection: this.netWorth,
-        groupBy: groupBy || this.controls.grouping.active()
-      }));
-		}
-	});
+    showNetWorth: function(groupBy) {
+      groupBy = groupBy || this.controls.grouping.active();
+
+      this.controls.grouping.activate(groupBy);
+
+      if (this.netWorth.length === 0) { return; }
+
+      var chart = new NetWorthChart({ model: this.netWorth, groupBy: groupBy });
+
+      var onGroupBy = function(groupBy) {
+        var name = groupBy.get('name');
+
+        chart.setProps({ groupBy: name });
+
+        vent.trigger('controls:groupby', { name: name });
+      };
+
+      React.renderComponent(
+        new Charting({ grouping: this.controls.grouping, onGroupBy: onGroupBy }, chart),
+        document.getElementById('main')
+      );
+    }
+  });
 
   return Controller;
 });

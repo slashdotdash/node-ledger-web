@@ -1,14 +1,10 @@
-/*global define */
-
-define(['backbone', 'marionette', 'vent', 'jquery', 'underscore'], function(Backbone, Marionette, vent, $, _) {
+define(['marionette'], function(Marionette) {
   'use strict';
 
-  // Worth Router
-  // ---------------
   var Router = Marionette.AppRouter.extend({
-  	appRoutes: {
-  	  'worth(/:groupBy)': 'showNetWorth'
-  	}		
+    appRoutes: {
+      'worth(/:groupBy)': 'showNetWorth'
+    }
   });
 
   return Router;

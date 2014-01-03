@@ -1,15 +1,11 @@
-/*global define */
-
-define(['backbone', 'marionette', 'vent', 'jquery', 'underscore'], function(Backbone, Marionette, vent, $, _) {
+define(['marionette'], function(Marionette) {
   'use strict';
 
-	// Dashboard Router
-	// ---------------
-	var Router = Marionette.AppRouter.extend({
-		appRoutes: {
-		  '': 'showDashboard'
-		}		
-	});
+  var Router = Marionette.AppRouter.extend({
+    appRoutes: {
+      '': 'showDashboard'
+    }
+  });
 
   return Router;
 });

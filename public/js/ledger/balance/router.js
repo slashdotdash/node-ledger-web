@@ -1,16 +1,12 @@
-/*global define */
-
-define(['backbone', 'marionette', 'vent', 'jquery', 'underscore'], function(Backbone, Marionette, vent, $, _) {
+define(['marionette'], function(Marionette) {
   'use strict';
 
-	// Balance Router
-	// ---------------
-	var Router = Marionette.AppRouter.extend({
-		appRoutes: {
-		  'balance': 'showBalance',
-		  'balance/*account': 'filterByAccount'
-		}		
-	});
+  var Router = Marionette.AppRouter.extend({
+    appRoutes: {
+      'balance': 'showBalance',
+      'balance/*account': 'showBalanceForAccount'
+    }
+  });
 
   return Router;
 });

@@ -1,51 +1,58 @@
-/*global define */
-
 define([
-    'ledger', 
-    'balance/model', 
-    'balance/views',
-    'controls/model',
-    'controls/views',
-    'filteredCollection',
-    'backbone', 'marionette', 'vent', 'jquery', 'underscore'], 
-  function(Ledger, Models, Views, Controls, ControlViews, FilteredCollection, Backbone, Marionette, vent, $, _) {
+  'ledger',
+  './model',
+  './chart',
+  'controls/model',
+  'filteredCollection',
+  'backbone',
+  'vent',
+  'underscore',
+  'react'
+], function(Ledger, Models, Chart, Controls, FilteredCollection, Backbone, vent, _, React) {
   'use strict';
   
-	// Balance Controller
-	// ------------------------------
-	var Controller = function () {
-		this.balance = new Models.Balances();
-    this.filteredBalance = FilteredCollection(this.balance);
-	};
+  var Controller = function () {
+    this.balance = new Models.Balances();
+    this.filteredBalance = new FilteredCollection(this.balance);
+  };
 
-	_.extend(Controller.prototype, {
-		start: _.once(function () {
+  _.extend(Controller.prototype, {
+    start: _.once(function () {
       this.balance.fetch({reset: true});
-		}),
+    }),
 
-		showBalance: function() {
-		  this.showBalanceChartView();
-		  
-		  // Initially show top-level accounts (e.g. Assets, Expenses, Income, Liabilities)
+    showBalance: function() {
+      this.showBalanceChartView();
+      
+      // Initially show top-level accounts (e.g. Assets, Expenses, Income, Liabilities)
       this.filteredBalance.where(function(entry) {
-        return entry.filterByDepth(1); 
+        return entry.filterByDepth(1);
       });
-		},
+    },
 
-		// filter balance by an account
-		filterByAccount: function(account) {
-		  this.showBalanceChartView();
-		  
-		  var name = (account || '').split('/').join(':');
-		  vent.trigger('balance:filter', {name: name});
-		},
-		
-		showBalanceChartView: function() {
-      Ledger.main.show(new Views.ChartView({
-        collection: this.filteredBalance
-      }));		  
-		}
-	});
+    // filter balance by an account
+    showBalanceForAccount: function(account) {
+      account = (account || '').split('/').join(':');
+
+      this.filterByAccount(account);
+      this.showBalanceChartView();
+    },
+    
+    showBalanceChartView: function() {
+      React.renderComponent(
+        new Chart({ model: this.filteredBalance, onFilter: this.filterByAccount.bind(this) }),
+        document.getElementById('main')
+      );
+    },
+
+    filterByAccount: function(account) {
+      this.filteredBalance.where(function(entry) {
+        return entry.filterByParentNameAndDepth(account);
+      });
+
+      vent.trigger('balance:filter', { name: account });
+    }
+  });
 
   vent.on('balance:filter', function(filter) {
     var name = filter.name,
