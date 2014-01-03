@@ -19,9 +19,14 @@ The `--HEAD` option is required to install version 3.x.
 
 ## Usage
 
-Install `ledger-web` and its dependencies with npm.
+Clone the `node-ledger-web` git repository from GitHub.
 
-    npm install ledger-web
+	git clone https://github.com/slashdotdash/node-ledger-web.git
+
+Install its dependencies with npm.
+
+	cd node-ledger-web
+    npm install
     
 Bower is used for JavaScript and CSS assets, once installed `npm install -g bower`, use to download the required dependencies.
 
@@ -32,3 +37,9 @@ Finally, run the express application and open [http://localhost:3000/](http://lo
     node app
     
 By default it will start two http servers: one to listen on port 3000 for web requests; another on port 3001 for API requests.
+
+### Configuration
+
+The Ledger `.dat` file that is served is configured in the `app.js` file. Replace the `example.dat` file in the line shown below with your own Ledger accounting file.
+
+	var ledgerRest = new LedgerRest({ file: 'example/example.dat' });
