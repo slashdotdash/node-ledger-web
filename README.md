@@ -4,6 +4,32 @@ Web front-end to access the Ledger command-line interface ([ledger-cli.org](http
 
 > Ledger is a powerful, double-entry accounting system that is accessed from the UNIX command-line.
 
+![Ledger Web](doc/home-preview.png)
+
+### Income
+
+Income compared to expenditure over time (daily, monthly or yearly).
+
+![Income](doc/income-preview.png)
+
+### Spending
+
+Over time and grouped by expense (daily, monthly or yearly).
+
+![Spending](doc/spending-preview.png)
+
+### Net Worth
+
+Assets minus liabilities over time (daily, monthly or yearly).
+
+![Net Worth](doc/net-worth-preview.png)
+
+### Balance
+
+Breakdown of transactions, filterable by type.
+
+![Balance](doc/balance-preview.png)
+
 ## Dependencies
 
   * [Ledger 3](http://ledger-cli.org/)
