@@ -34,19 +34,6 @@ module.exports = function(grunt) {
       }
     },
 
-    concat: {
-      js: {
-        src: [
-          'vendor/*.js',
-          'components/modernizr/modernizr.js',
-          'components/underscore/underscore.js',
-          'components/backbone/backbone-min.js',
-          'components/backbone.marionette/lib/backbone.marionette.min.js'
-        ],
-        dest: 'public/js/ledger-web.min.js'
-      }
-    },
-    
     copy: {
       vendor: {
         files: [
@@ -94,6 +81,17 @@ module.exports = function(grunt) {
       }
     },
 
+    requirejs: {
+      compile: {
+        options: {
+          baseUrl: 'public/js/ledger',
+          mainConfigFile: 'public/js/ledger/main.js',
+          name: 'main',
+          out: 'public/js/ledger.js'
+        }
+      }
+    },
+
     watch: {
       gruntfile: {
         files: '<%= jshint.gruntfile.src %>',
@@ -110,14 +108,13 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-react');
   grunt.loadNpmTasks('grunt-recess');
 
   // Default task.
-  grunt.registerTask('default', ['copy', 'recess']);
+  grunt.registerTask('default', ['copy', 'recess', 'requirejs']);
 };

@@ -20,8 +20,12 @@
         <%- body %>
       </div>
     </div>
-
-    <script data-main="/js/ledger/main" src="/js/vendor/require.js"></script>
+    
+    <% if (environment === 'production') { %>
+      <script data-main="/js/ledger" src="/js/vendor/require.js"></script>
+    <% } else { %>
+      <script data-main="/js/ledger/main" src="/js/vendor/require.js"></script>
+    <% } %>
 
     <script type="text/javascript">
       <%- blocks.script %>
