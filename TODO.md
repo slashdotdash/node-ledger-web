@@ -1,12 +1,12 @@
 # TODO
 
-* Ledger tabular reports
+[ ] Income chart colours - green for income, red for expenses.
+
+[ ] Balance chart - include categories without any contribution, but that have children (currently not shown).
+
+[ ] Chart of delta between income and expenses - financial health.
+
+[ ] Ledger tabular reports
   - assets v liabilities
-  
-* Documentation including screenshots of available financial charts (automated capture with headless browser).
 
-* Dashboard overview with current state of financial health
-
-* Getting started steps in README
-
-* Symlink script for configuring required 3rd party JavaScript dependencies in public/vendor dir.
+[ ] Dashboard overview with current state of financial health.

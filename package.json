@@ -31,10 +31,10 @@
     "grunt-recess": "~0.5.0"
   },
   "dependencies": {
-    "express": "~3.4.7",
+    "express": "~3.4.8",
     "ejs-locals": "~1.0.2",
-    "http-proxy": "~0.10.4",
-    "ledger-rest": "0.0.8",
+    "http-proxy": "~1.0.2",
+    "ledger-rest": "0.1.0",
     "lodash": "~2.4.1"
   }
 }
