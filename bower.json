@@ -5,6 +5,7 @@
     "bootstrap": "~2.3.2",
     "modernizr": "~2.7.1",
     "jquery": "~2.0.3",
+    "backbone": "1.1.0",
     "backbone.marionette": "~1.4.1",
     "handlebars": "~1.2.1",
     "nvd3": "git://github.com/novus/nvd3",
