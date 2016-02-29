@@ -28,8 +28,9 @@ app.configure(function() {
   // Example ledger .dat file from the appendix of the Ledger 3 manual
   var ledgerRest = new LedgerRest({ file: path.join(__dirname, 'example/example.dat') });
   
-  ledgerRest.listen(port + 1, function() {
-    console.log('Ledger REST server listening on port ' + port + 1);
+  var ledgerRestPort = port + 1;
+  ledgerRest.listen(ledgerRestPort, function() {
+    console.log('Ledger REST server listening on port ' + ledgerRestPort);
   });
   
   // Proxy API requests to the ledger REST service
