@@ -70,6 +70,16 @@ By default it will start two http servers: one to listen on port 3000 for web re
 
 ### Configuration
 
-The Ledger `.dat` file that is served is configured in the `app.js` file. Replace the `example.dat` file in the line shown below with your own Ledger accounting file.
+Copy and edit the sample config.
 
-    var ledgerRest = new LedgerRest({ file: 'example/example.dat' });
+    cp sample-config.json config.json
+    vim config.json
+
+#### Binary
+
+Specify the ledger binary path. Leave it as "ledger" if it's already on your `$PATH`. Otherwise, specify the absolute path.
+
+#### File
+
+Specify the path to your ledger file.
+
