@@ -53,20 +53,22 @@ Install the dependencies with npm.
 
     cd node-ledger-web
     npm install
-    
-Bower is used for JavaScript and CSS assets, once installed `npm install -g bower`, you can download the required dependencies.
 
+Bower is used to manage JavaScript and CSS dependencies. Install it and our dependencies
+
+    npm install -g bower
     bower install
 
-Grunt is used for building the front-end assets, you need to run the default Grunt task, once installed `npm install -g grunt-cli`.
-	
+Grunt is used for building the front-end assets. Install grunt and run its default build task.
+
+    npm install -g grunt-cli
     grunt
 
-Finally, run the express application and open [http://localhost:3000/](http://localhost:3000/) in a web browser. 
+Finally, run the express application and open [http://localhost:3000/](http://localhost:3000/) in a web browser.
 
     node app.js
-    
-By default it will start two http servers: one to listen on port 3000 for web requests; another on port 3001 for API requests.
+
+Two http servers will be started: One to listen on port 3000 for web requests, and one on port 3001 for API requests.
 
 ### Configuration
 
