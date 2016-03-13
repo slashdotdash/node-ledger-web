@@ -7,6 +7,13 @@ var _ = require('lodash'),
     httpProxy = require('http-proxy'),
     LedgerRest = require('ledger-rest').LedgerRest;
 
+var config;
+try {
+  config = require('./config.json');
+} catch (e) {
+  config = require('./sample-config.json');
+}
+
 var app = express();
 
 app.configure(function() {
@@ -26,10 +33,11 @@ app.configure(function() {
   var proxy = httpProxy.createProxyServer();
   
   // Example ledger .dat file from the appendix of the Ledger 3 manual
-  var ledgerRest = new LedgerRest({ file: path.join(__dirname, 'example/example.dat') });
+  var ledgerRest = new LedgerRest(config);
   
-  ledgerRest.listen(port + 1, function() {
-    console.log('Ledger REST server listening on port ' + port + 1);
+  var ledgerRestPort = port + 1;
+  ledgerRest.listen(ledgerRestPort, function() {
+    console.log('Ledger REST server listening on port ' + ledgerRestPort);
   });
   
   // Proxy API requests to the ledger REST service

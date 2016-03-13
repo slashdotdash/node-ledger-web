@@ -53,23 +53,35 @@ Install the dependencies with npm.
 
     cd node-ledger-web
     npm install
-    
-Bower is used for JavaScript and CSS assets, once installed `npm install -g bower`, you can download the required dependencies.
 
+Bower is used to manage JavaScript and CSS dependencies. Install it and our dependencies
+
+    npm install -g bower
     bower install
 
-Grunt is used for building the front-end assets, you need to run the default Grunt task, once installed `npm install -g grunt-cli`.
-	
+Grunt is used for building the front-end assets. Install grunt and run its default build task.
+
+    npm install -g grunt-cli
     grunt
 
-Finally, run the express application and open [http://localhost:3000/](http://localhost:3000/) in a web browser. 
+Finally, run the express application and open [http://localhost:3000/](http://localhost:3000/) in a web browser.
 
-    NODE_ENV=production node app.js
-    
-By default it will start two http servers: one to listen on port 3000 for web requests; another on port 3001 for API requests.
+    node app.js
+
+Two http servers will be started: One to listen on port 3000 for web requests, and one on port 3001 for API requests.
 
 ### Configuration
 
-The Ledger `.dat` file that is served is configured in the `app.js` file. Replace the `example.dat` file in the line shown below with your own Ledger accounting file.
+Copy and edit the sample config.
 
-    var ledgerRest = new LedgerRest({ file: 'example/example.dat' });
+    cp sample-config.json config.json
+    vim config.json
+
+#### Binary
+
+Specify the ledger binary path. Leave it as "ledger" if it's already on your `$PATH`. Otherwise, specify the absolute path.
+
+#### File
+
+Specify the path to your ledger file.
+
